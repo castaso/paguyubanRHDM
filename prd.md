@@ -84,8 +84,9 @@ generations). **Secondary:** invited friends of the family.
 | M5 | Family | Yes | Photo albums, member directory, recipe box |
 | M6 | Events | Yes | List + month grouping, RSVP counts |
 | M7 | About | Yes | How the market works, house rules, contact |
-| M8 | Message board | Deferred | v2 |
-| M9 | Family tree | Deferred | v2 (interactive) |
+| M8 | Access control + sign-in | Yes | Settings cog, RBAC allow-list, three sign-in modes (prototype / Supabase / server) |
+| M9 | Message board | Deferred | v2 |
+| M10 | Family tree | Deferred | v2 (interactive) |
 
 ---
 
