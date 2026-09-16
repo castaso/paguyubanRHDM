@@ -26,6 +26,7 @@ external assets. Open `index.html` and it runs.
 │   ├── i18n-content.js    Content translations + dynamic UI strings
 │   ├── lang.js            Language switch: <html lang>, persistence, swapping
 │   ├── motion.js          Scroll reveals, parallax, hover tilt (reduced-motion aware)
+│   ├── nav.js             Mobile navigation drawer (hamburger, escape/outside-click)
 │   └── favicon.svg
 ├── supabase/              Supabase Auth + Postgres RLS
 │   ├── schema.sql         Tables, allow-list, policies — run this in Supabase
@@ -34,7 +35,7 @@ external assets. Open `index.html` and it runs.
 │   ├── server.js          HTTP server, routes, settings API
 │   ├── config.js          Environment configuration
 │   ├── lib/               oauth.js · session.js · rbac.js · supabase-token.js · static-site.js
-│   ├── test/              api.test.js (access) · design.test.js (theme, contrast, copy) · i18n.test.js (languages) · motion.test.js (motion)
+│   ├── test/              api.test.js (access) · design.test.js (theme, contrast, copy) · i18n.test.js (languages) · motion.test.js (motion) · nav.test.js (mobile nav)
 │   ├── .env.example       Copy to .env and fill in
 │   ├── Dockerfile
 │   └── README.md          Backend setup + deployment
@@ -89,6 +90,7 @@ in `server/README.md`.
 | Language switch behaviour | `assets/lang.js` |
 | Motion and hover physics | `assets/motion.js` + the motion block in `assets/styles.css` |
 | The marquee ticker | `assets/app.js` → `initTicker()` |
+| Mobile navigation | `assets/nav.js` + the drawer block in `assets/styles.css` |
 
 ### Adding a listing
 
@@ -314,6 +316,27 @@ Three rules it follows:
 
 ```bash
 node server/test/motion.test.js
+```
+
+## Mobile navigation
+
+Below 860px the nav links and the header controls (theme, language, settings
+cog) would otherwise crowd into a wrapping row. Instead they collapse behind a
+hamburger in the top-right that expands on click.
+
+- **Desktop is untouched.** The drawer is `display: contents`, so the header
+  lays out exactly as before; the toggle is `display: none`.
+- **It is a real disclosure control**, not a mystery-meat icon: a native
+  `<button>` with `aria-expanded` and `aria-controls`, and the collapsed panel is
+  `visibility: hidden` so it leaves the tab order and the accessibility tree.
+- **Four ways to close:** Escape, a click outside, choosing a link, or the
+  viewport growing back to desktop.
+- **The cog becomes visible inside the drawer.** It is deliberately faint on
+  desktop and invisible until hovered, which does not work on touch, so opening
+  the drawer reveals it.
+
+```bash
+node server/test/nav.test.js
 ```
 
 ## Quality notes

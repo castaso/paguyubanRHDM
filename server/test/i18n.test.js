@@ -51,7 +51,7 @@ const pageSource = fs
   .filter((f) => f.endsWith(".html"))
   .map((f) => read(f))
   .join("\n");
-const jsSource = ["assets/app.js", "assets/auth.js", "assets/lang.js", "assets/supabase-auth.js", "assets/data.js", "assets/i18n-content.js"]
+const jsSource = ["assets/app.js", "assets/auth.js", "assets/lang.js", "assets/supabase-auth.js", "assets/data.js", "assets/i18n-content.js", "assets/nav.js", "assets/motion.js"]
   .map(read)
   .join("\n");
 const haystack = pageSource + "\n" + jsSource;

@@ -18,6 +18,8 @@ window.ALDER_I18N.id = {
   "Back to market": "Kembali ke pasar",
   "Back to the market": "Kembali ke pasar",
   "Skip to content": "Lompat ke konten",
+  "Menu": "Menu",
+  "Close menu": "Tutup menu",
   "est. 2019": "sejak 2019",
   "Questions?": "Ada pertanyaan?",
   "· kept going by": "· dikelola oleh",

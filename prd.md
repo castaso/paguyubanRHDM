@@ -263,6 +263,12 @@ Categories: `handmade · secondhand · services · produce · rentals · digital
   `prefers-reduced-motion`, and it adds no library. Enforced by
   `server/test/motion.test.js`.
 
+- **NFR11** Responsive navigation - below 860px the nav and header controls
+  collapse into a drawer behind a hamburger that expands on click. It is a
+  native button with `aria-expanded` and `aria-controls`, leaves the tab order
+  when collapsed, and closes on Escape, outside click, link choice or resize.
+  Desktop layout is unchanged. Enforced by `server/test/nav.test.js`.
+
 ## 11. Success signals (v1, qualitative)
 
 - A relative can list an item in under two minutes without instructions.
@@ -300,7 +306,7 @@ Static site served from the managed nginx static host.
 Entry point: `index.html`. Pages: `index`, `marketplace`, `listing`, `sell`,
 `family`, `events`, `about`. Shared: `assets/styles.css`, `assets/app.js`,
 `assets/data.js`, `assets/theme.js`, `assets/lang.js`, `assets/i18n.js`,
-`assets/i18n-content.js`, `assets/motion.js`, `assets/auth.js`,
+`assets/i18n-content.js`, `assets/motion.js`, `assets/nav.js`, `assets/auth.js`,
 `assets/supabase-auth.js`. Tests: `server/test/api.test.js`,
 `server/test/design.test.js`, `server/test/i18n.test.js`,
-`server/test/motion.test.js`.
+`server/test/motion.test.js`, `server/test/nav.test.js`.
