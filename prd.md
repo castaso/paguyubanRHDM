@@ -161,6 +161,27 @@ page. Every page reachable in one tap from anywhere.
   no outside reselling.
 - **FR7.3** Contact path for the organiser.
 
+### M8 — Access control (RBAC) + sign-in
+- **FR8.1** Every page is gated behind a sign-in step; unauthenticated visitors
+  see only the sign-in card.
+- **FR8.2** Sign-in is presented as **Sign in with Google**. The allow-list is
+  exactly: `paguyubanRHDM@gmail.com`, `castasoft@gmail.com`.
+- **FR8.3** Any other account is refused with a message that names the RBAC rule.
+- **FR8.4** A **settings control sits at the top-right of the header and is
+  invisible until hovered, focused, or opened.** It opens a panel showing the
+  signed-in account, the allow-list, how access is enforced, and Sign out.
+- **FR8.5** Session persists across pages and reloads; Sign out returns to the gate.
+- **FR8.6** A **server-side backend** (see `server/`) implements the real flow:
+  Google OAuth 2.0 Authorization Code + PKCE, ID-token verification against
+  Google's JWKS, server-enforced RBAC on every request, a signed HttpOnly
+  session cookie, and page gating. The static host cannot run it, so the backend
+  deploys separately (a container host) and the front end switches to it with
+  `authMode: "server"`.
+- **FR8.7 (constraint)** On the **static preview channel only**, the gate
+  necessarily falls back to the browser-side prototype, because that host has no
+  server and its CSP blocks Google's script. The prototype is labelled as such
+  on screen and in `assets/auth.js`.
+
 ---
 
 ## 8. States (every data surface)
@@ -233,8 +254,17 @@ Categories: `handmade · secondhand · services · produce · rentals · digital
 saved-search alerts, image upload (v1 uses tinted placeholder media),
 notification emails.
 
-**Known constraint:** money and messaging happen offline. The site's job is
+**Known constraint — money and messaging are offline.** The site's job is
 discovery and connection.
+
+**Known constraint — where access control is enforced.** Real enforcement lives
+in the backend under `server/` (Google OAuth + a verified ID token + a signed
+session + the allow-list checked on every request). The **static preview channel
+cannot run a backend** and its CSP blocks Google's script, so on that channel the
+gate degrades to the browser-side prototype in `assets/auth.js`, which is
+bypassable and labelled as such. Deploying the backend and setting
+`authMode: "server"` closes that gap. This is a deliberate, labelled split — not
+an oversight.
 
 ---
 

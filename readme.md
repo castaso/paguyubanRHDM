@@ -19,18 +19,39 @@ external assets. Open `index.html` and it runs.
 │   ├── styles.css      All styling. Design tokens live in :root at the top.
 │   ├── data.js         All content — listings, members, events, news, recipes
 │   ├── app.js          Filtering, detail rendering, form validation, chrome
+│   ├── auth.js         Access gate (RBAC) + the header settings panel
 │   └── favicon.svg
+├── server/             Backend: Google OAuth + server-enforced RBAC
+│   ├── server.js       HTTP server, routes, page gating
+│   ├── config.js       Environment configuration
+│   ├── lib/            oauth.js · session.js · rbac.js · static-site.js
+│   ├── .env.example    Copy to .env and fill in
+│   ├── Dockerfile
+│   └── README.md       Backend setup + deployment
 └── README.md
 ```
 
 ## Run it
 
-It is a static site. Either:
+### Site alone (static)
 
 - **Double-click `index.html`**, or
 - serve the folder: `python -m http.server 8000` then open `http://localhost:8000`.
 
-There are no dependencies to install and no build command.
+No dependencies and no build step. You will land on the sign-in gate — enter one
+of the allowed accounts to get in (see *Access control* below).
+
+### Site + backend (real Google sign-in)
+
+```bash
+cd server
+cp .env.example .env      # fill in the Google credentials + SESSION_SECRET
+node --env-file=.env server.js
+# → http://localhost:8787
+```
+
+The backend serves the site **and** gates it. The Google Cloud Console steps are
+in `server/README.md`.
 
 ## How to change things
 
@@ -46,6 +67,9 @@ There are no dependencies to install and no build command.
 | Brand name, tagline, contact email | `assets/data.js` → `SITE` |
 | Nav links or footer columns | the `<header>` / `<footer>` in each `.html` file |
 | Form fields or their rules | `sell.html` (markup) + `FIELDS` in `assets/app.js` |
+| Who may sign in (RBAC allow-list) | `assets/auth.js` → `allowedEmails` |
+| Sign-in gate wording / behaviour | `assets/auth.js` → `buildGate()` |
+| The settings panel (the cog) | `assets/auth.js` → `buildSettings()` |
 
 ### Adding a listing
 
@@ -88,6 +112,58 @@ cross-origin requests.
 loading state on every filter change, the empty state when a search matches
 nothing (e.g. `marketplace.html?q=zzzz`), and the error state at
 `marketplace.html?state=error` — which includes a working "Try again" button.
+
+## Access control (RBAC) — read this first
+
+There is a sign-in gate: only two accounts may enter.
+
+```js
+// assets/auth.js
+allowedEmails: ["paguyubanRHDM@gmail.com", "castasoft@gmail.com"]
+```
+
+A gear icon sits in the **top-right of the header**; it is invisible until you
+hover it, tab to it, or open it — then it reveals the settings panel with the
+signed-in account, the allow-list, and **Sign out**. Once signed out, the gate
+returns.
+
+### ⚠️ This gate is not real security
+
+The whole check runs in the browser (`assets/auth.js`), and a static file host
+has no server. Anything client-side can be bypassed: open devtools, set
+`localStorage["alderhouse.session.v1"]`, or just read the files. Treat this as a
+**reviewable prototype of the experience**, not as protection.
+
+It also cannot be a *real* Google sign-in here, for two independent reasons:
+
+1. Google Identity Services loads `https://accounts.google.com/gsi/client`, and
+   this host serves a strict Content-Security-Policy that blocks every
+   cross-origin request. The button cannot fetch Google's script or chooser.
+2. Even if it could, verifying the returned ID token and holding a session
+   requires a server — there is none on a static host.
+
+So the gate substitutes a local step: type the account email, and it is checked
+against the allow-list. Approved → in. Anything else → refused.
+
+### The real thing already ships — in `server/`
+
+This repository now contains that backend. It implements Google OAuth 2.0
+(Authorization Code **+ PKCE**), verifies the ID token against Google's JWKS,
+enforces the allow-list server-side on every request, and issues a signed
+HttpOnly session cookie. It also serves and gates the site.
+
+Setup and deployment: `server/README.md`.
+
+To switch the front end over, edit `assets/auth.js`:
+
+```js
+authMode: "server",   // was "prototype"
+apiBase: "",          // "" = same origin, or the backend's origin
+```
+
+Until you do, the prototype gate runs and the allow-list lives in **two**
+places — keep `assets/auth.js` → `allowedEmails` in sync with the server's
+`ALLOWED_EMAILS`.
 
 ## Quality notes
 

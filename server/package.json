@@ -1,0 +1,16 @@
+{
+  "name": "alder-house-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Google OAuth 2.0 (PKCE) sign-in with server-enforced RBAC, serving the Alder House static site.",
+  "main": "server.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {}
+}
