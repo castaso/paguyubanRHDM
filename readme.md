@@ -84,6 +84,7 @@ in `server/README.md`.
 | Which sign-in provider is used | `assets/auth.js` → `authMode` (`prototype` / `supabase` / `server`) |
 | Supabase project + keys | `assets/auth.js` → `supabase.url` / `supabase.anonKey` |
 | The settings panel (the cog) | `assets/auth.js` → `buildSettings()` |
+| The cog's reveal behaviour | `assets/styles.css` → the `.cog` rules |
 | Theme colours | `assets/styles.css` → the `:root` and `[data-theme="dark"]` blocks |
 | Theme default and toggle | `assets/theme.js` |
 | Site language and translations | `assets/i18n.js` (interface) + `assets/i18n-content.js` (content) |
@@ -320,7 +321,7 @@ node server/test/motion.test.js
 
 ## Mobile navigation
 
-Below 860px the nav links and the header controls (theme, language, settings
+Below 1024px the nav links and the header controls (theme, language, settings
 cog) would otherwise crowd into a wrapping row. Instead they collapse behind a
 hamburger in the top-right that expands on click.
 
@@ -331,9 +332,14 @@ hamburger in the top-right that expands on click.
   `visibility: hidden` so it leaves the tab order and the accessibility tree.
 - **Four ways to close:** Escape, a click outside, choosing a link, or the
   viewport growing back to desktop.
-- **The cog becomes visible inside the drawer.** It is deliberately faint on
-  desktop and invisible until hovered, which does not work on touch, so opening
-  the drawer reveals it.
+- **The cog becomes visible inside the drawer.** It is deliberately invisible
+  at rest (revealed only by the pointer on the control itself, by keyboard
+  focus, or by its own open panel), which does not work on touch, so opening the
+  drawer reveals it.
+- **The collapse is opt-in.** `nav.js` sets `data-nav-ready` before first paint;
+  the collapsed state is scoped to that flag. If the script is blocked or
+  JavaScript is off, the drawer stays expanded and the hamburger is hidden, so
+  the nav is reachable instead of trapped behind a dead button.
 
 ```bash
 node server/test/nav.test.js

@@ -450,11 +450,12 @@ h4, .h4 { font-size: var(--fs-h4); font-weight: 600; line-height: 1.35; margin: 
 .cog {
   display: grid; place-items: center; width: 34px; height: 34px; flex: none;
   border: 1px solid transparent; border-radius: 9px; background: transparent; color: var(--muted);
+  /* Transparent at rest. Revealed only by the pointer on the control itself,
+     by keyboard focus, or by its own open panel. There is deliberately no
+     ambient reveal from hovering elsewhere in the header. */
   opacity: 0; transition: opacity .18s ease, color .15s ease, background-color .15s ease;
 }
 .cog:hover, .cog:focus-visible, .cog[aria-expanded="true"] { opacity: 1; color: var(--fg); background: var(--fg-soft); }
-.topnav-inner:hover .cog { opacity: .5; }
-@media (hover: none) { .cog { opacity: .4; } }
 @media (prefers-reduced-motion: reduce) { .cog { transition: none; } }
 
 /* stacked step list: a different layout family from the 3-equal-card row */
@@ -580,12 +581,12 @@ html[data-motion="on"] [data-reveal-delay="4"] { transition-delay: .28s; }
 .nav-toggle { display: none; }
 .nav-drawer { display: contents; }
 
-@media (max-width: 860px) {
+@media (max-width: 1024px) {
   .topnav-inner { flex-wrap: wrap; }
 
-  .nav-toggle {
+  html[data-nav-ready="true"] .nav-toggle {
     display: grid; place-items: center; flex: none;
-    width: 42px; height: 42px; margin-left: auto;
+    width: 44px; height: 44px; margin-left: auto;
     border: 1px solid var(--border); border-radius: 10px;
     background: var(--surface); color: var(--fg);
   }
@@ -594,13 +595,16 @@ html[data-motion="on"] [data-reveal-delay="4"] { transition-delay: .28s; }
   html[data-nav-open="true"] .nav-toggle svg { transform: rotate(90deg); }
   html[data-nav-open="true"] .nav-toggle { border-color: var(--fg); box-shadow: 3px 3px 0 var(--fg); }
 
-  .nav-drawer {
-    display: block; flex: 1 0 100%; width: 100%;
+  .nav-drawer { display: block; flex: 1 0 100%; width: 100%; }
+  /* Collapsed ONLY once nav.js confirms it is present and wired. Without that
+     flag (script blocked, or JavaScript off) the drawer stays expanded, so the
+     nav is reachable instead of trapped behind a dead button. */
+  html[data-nav-ready="true"] .nav-drawer {
     max-height: 0; overflow: hidden; opacity: 0; visibility: hidden;
     transition: max-height .34s cubic-bezier(.2,.7,.2,1), opacity .22s ease,
                 visibility 0s linear .34s;
   }
-  html[data-nav-open="true"] .nav-drawer {
+  html[data-nav-ready="true"][data-nav-open="true"] .nav-drawer {
     max-height: 80vh; opacity: 1; visibility: visible;
     transition: max-height .4s cubic-bezier(.2,.7,.2,1), opacity .3s ease, visibility 0s;
   }

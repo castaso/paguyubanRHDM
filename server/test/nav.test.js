@@ -58,15 +58,26 @@ check("every page loads nav.js after the auth scripts", notWired.length === 0, "
 /* N5 CSS: desktop untouched, mobile collapsed then expanded */
 const desktopOk = /\.nav-drawer \{ display: contents; \}/.test(css) && /\.nav-toggle \{ display: none; \}/.test(css);
 const mobileOk =
-  /@media \(max-width: 860px\)/.test(css) &&
+  /@media \(max-width: 1024px\)/.test(css) &&
   /visibility: hidden/.test(css) &&
-  /html\[data-nav-open="true"\] \.nav-drawer/.test(css) &&
+  /\[data-nav-open="true"\] \.nav-drawer/.test(css) &&
   /max-height: 80vh/.test(css);
 check("desktop is untouched and mobile collapses then expands", desktopOk && mobileOk, "desktop=" + desktopOk + " mobile=" + mobileOk);
 
 /* N6 collapsed means out of the tab order */
-const hiddenOk = /visibility: hidden/.test(css) && /visibility: visible/.test(css);
+const hiddenOk = /html\[data-nav-ready="true"\] \.nav-drawer \{[\s\S]*?visibility: hidden/.test(css) && /visibility: visible/.test(css);
 check("the collapsed drawer leaves the tab order", hiddenOk, "visibilityToggle=" + hiddenOk);
+
+/* N7 a blocked or absent script must not trap the nav behind a dead button */
+const fallbackOk =
+  /html\[data-nav-ready="true"\] \.nav-toggle \{/.test(css) &&
+  /setAttribute\("data-nav-ready", "true"\)/.test(nav) &&
+  /html\[data-nav-ready="true"\] \.nav-drawer \{/.test(css);
+check(
+  "a blocked script leaves the nav reachable",
+  fallbackOk,
+  "toggleGated=" + /html\[data-nav-ready="true"\] \.nav-toggle \{/.test(css) + " flagSet=" + /setAttribute\("data-nav-ready", "true"\)/.test(nav)
+);
 
 /* N7 four ways to close */
 const closers = {
@@ -97,6 +108,27 @@ check(
   "the toggle label is in both dictionaries",
   /"Menu":/.test(i18nSrc) && /"Close menu":/.test(i18nSrc),
   "menu=" + /"Menu":/.test(i18nSrc) + " closeMenu=" + /"Close menu":/.test(i18nSrc)
+);
+
+/* N10 it waits for the DOM before wiring. This file is loaded from <head>, so
+   a module-scope getElementById returns null and the toggle silently never
+   binds. That was the bug that shipped; this check exists so it cannot return. */
+const guardIdx = nav.indexOf("function init(");
+const lookupIdx = nav.indexOf('getElementById("nav-toggle")');
+check(
+  "nav.js waits for the DOM before wiring",
+  /document\.readyState === "loading"/.test(nav) && guardIdx > -1 && lookupIdx > guardIdx,
+  "readyStateGuard=" + /document\.readyState === "loading"/.test(nav) + " lookupInsideInit=" + (guardIdx > -1 && lookupIdx > guardIdx)
+);
+
+/* N11 the cog is transparent at rest, revealed only on intent */
+const cogBase = /\.cog \{[\s\S]*?opacity: 0;/.test(css);
+const cogReveal = /\.cog:hover, \.cog:focus-visible, \.cog\[aria-expanded="true"\] \{ opacity: 1;/.test(css);
+const noAmbientReveal = !/\.topnav-inner:hover \.cog/.test(css) && !/@media \(hover: none\) \{ \.cog/.test(css);
+check(
+  "the cog is transparent at rest and shown on intent",
+  cogBase && cogReveal && noAmbientReveal,
+  "atRest=" + cogBase + " onIntent=" + cogReveal + " noAmbientReveal=" + noAmbientReveal
 );
 
 const passed = results.filter((r) => r.ok).length;
