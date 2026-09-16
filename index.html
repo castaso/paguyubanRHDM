@@ -13,6 +13,7 @@
   <script src="assets/theme.js"></script>
   <script src="assets/supabase-auth.js"></script>
   <script src="assets/auth.js"></script>
+  <script src="assets/motion.js"></script>
 <script id="auto-designer-preview-contract" type="application/json">
 { "artifactRole": "web-page", "authoringViewport": { "width": 1440, "height": 900 },
   "deviceAdaptation": { "enabled": true, "strategy": "responsive", "supportedDevices": ["desktop","tablet","mobile"] },
@@ -40,10 +41,12 @@
   </div>
 </header>
 
+<div class="ticker" aria-hidden="true"><div class="ticker-track" id="ticker-track"></div></div>
 <main id="main">
 
   <!-- Hero -->
-  <section class="section hero">
+  <section class="section hero" data-reveal>
+    <div class="hero-mark" aria-hidden="true" data-parallax="0.16">RHDM</div>
     <div class="container hero-split">
       <div>
         <p class="eyebrow">The RHDM community · four branches, one house</p>
@@ -68,7 +71,7 @@
   </section>
 
   <!-- Latest news -->
-  <section class="section">
+  <section class="section" data-reveal>
     <div class="container grid-2-1">
       <div>
         <div class="row-between" style="margin-bottom:24px;">
@@ -86,7 +89,7 @@
   </section>
 
   <!-- Market -->
-  <section class="section">
+  <section class="section" data-reveal>
     <div class="container">
       <div class="row-between" style="margin-bottom:32px;">
         <div style="max-width:44ch;">
@@ -101,7 +104,7 @@
   </section>
 
   <!-- CTA -->
-  <section class="section" style="text-align:center;">
+  <section class="section" data-reveal style="text-align:center;">
     <div class="container" style="max-width:620px;">
       <h2>Looking for something the family has going spare?</h2>
       <p class="lead" style="margin:16px auto 28px;">The market is where relatives list what they have too much of, lend what they can spare, and offer what they are good at.</p>

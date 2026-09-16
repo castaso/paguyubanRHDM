@@ -67,7 +67,7 @@
   /* ── cards ─────────────────────────────────────────────────────────── */
   function listingCard(l) {
     return '' +
-      '<article class="listing-card card-hover">' +
+      '<article class="listing-card card-hover" data-tilt>' +
         '<div class="listing-media" style="--card-tint: var(' + esc(l.tint) + ')" role="img" aria-label="Placeholder image for ' + esc(l.title) + '">Photo · replace with your own</div>' +
         '<div class="listing-body">' +
           '<span class="badge">' + esc(catLabel(l.category)) + '</span>' +
@@ -551,6 +551,16 @@
   }
 
   /* ── boot ──────────────────────────────────────────────────────────── */
+  /* Marquee ticker: real market items, duplicated so the -50% loop is seamless. */
+  function initTicker() {
+    var track = $("#ticker-track");
+    if (!track) return;
+    var items = (D.listings || []).slice(0, 8).map(function (l) {
+      return '<span class="ticker-item">' + esc(l.title) + " " + esc(money(l.price, l.priceUnit)) + "</span>";
+    }).join("");
+    track.innerHTML = items + items;
+  }
+
   function boot() {
     if (window.ALDER_LANG) D = window.ALDER_LANG.data() || D;
     setChrome();
@@ -560,7 +570,9 @@
     initFamily();
     initEvents();
     initSell();
+    initTicker();
     relayout();
+    if (window.ALDER_MOTION) window.ALDER_MOTION.init();
   }
 
   /* Re-render everything when the visitor switches language. */

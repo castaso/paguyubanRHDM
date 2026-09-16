@@ -13,6 +13,7 @@
   <script src="assets/theme.js"></script>
   <script src="assets/supabase-auth.js"></script>
   <script src="assets/auth.js"></script>
+  <script src="assets/motion.js"></script>
 <script id="auto-designer-preview-contract" type="application/json">
 { "artifactRole": "web-page", "authoringViewport": { "width": 1440, "height": 900 },
   "deviceAdaptation": { "enabled": true, "strategy": "responsive", "supportedDevices": ["desktop","tablet","mobile"] },
@@ -40,12 +41,13 @@
   </div>
 </header>
 
+<div class="ticker" aria-hidden="true"><div class="ticker-track" id="ticker-track"></div></div>
 <main id="main">
   <div class="container">
     <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a> <span aria-hidden="true">/</span> <span>Market</span></nav>
   </div>
 
-  <section class="section" style="padding-top:0;">
+  <section class="section" data-reveal style="padding-top:0;">
     <div class="container" id="market">
       <div class="row-between" style="align-items:flex-end;margin-bottom:28px;">
         <div style="max-width:52ch;">

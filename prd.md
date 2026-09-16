@@ -257,6 +257,12 @@ Categories: `handmade · secondhand · services · produce · rentals · digital
   translated; a missing translation degrades to English rather than breaking a
   page. Enforced by `server/test/i18n.test.js`.
 
+- **NFR10** Motion - bold motion is part of the design: scroll reveals,
+  parallax, card hover physics and a marquee ticker. It is opt-in (content is
+  hidden only once a script confirms motion is welcome), it yields entirely to
+  `prefers-reduced-motion`, and it adds no library. Enforced by
+  `server/test/motion.test.js`.
+
 ## 11. Success signals (v1, qualitative)
 
 - A relative can list an item in under two minutes without instructions.
@@ -294,6 +300,7 @@ Static site served from the managed nginx static host.
 Entry point: `index.html`. Pages: `index`, `marketplace`, `listing`, `sell`,
 `family`, `events`, `about`. Shared: `assets/styles.css`, `assets/app.js`,
 `assets/data.js`, `assets/theme.js`, `assets/lang.js`, `assets/i18n.js`,
-`assets/i18n-content.js`, `assets/auth.js`, `assets/supabase-auth.js`. Tests:
-`server/test/api.test.js`, `server/test/design.test.js`,
-`server/test/i18n.test.js`.
+`assets/i18n-content.js`, `assets/motion.js`, `assets/auth.js`,
+`assets/supabase-auth.js`. Tests: `server/test/api.test.js`,
+`server/test/design.test.js`, `server/test/i18n.test.js`,
+`server/test/motion.test.js`.

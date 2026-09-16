@@ -133,7 +133,7 @@ htmlFiles.forEach((f) => {
     });
   }
 });
-["app.js", "auth.js", "theme.js", "supabase-auth.js", "data.js", "lang.js", "i18n.js", "i18n-content.js"].forEach((f) => {
+["app.js", "auth.js", "theme.js", "supabase-auth.js", "data.js", "lang.js", "i18n.js", "i18n-content.js", "motion.js"].forEach((f) => {
   const p = path.join(SITE, "assets", f);
   if (!fs.existsSync(p)) return;
   const body = stripJsComments(fs.readFileSync(p, "utf8"));

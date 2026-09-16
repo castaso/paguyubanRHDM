@@ -13,6 +13,7 @@
   <script src="assets/theme.js"></script>
   <script src="assets/supabase-auth.js"></script>
   <script src="assets/auth.js"></script>
+  <script src="assets/motion.js"></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -35,12 +36,13 @@
   </div>
 </header>
 
+<div class="ticker" aria-hidden="true"><div class="ticker-track" id="ticker-track"></div></div>
 <main id="main">
   <div class="container">
     <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a> <span aria-hidden="true">/</span> <span>Family</span></nav>
   </div>
 
-  <section class="section" style="padding-top:8px;">
+  <section class="section" data-reveal style="padding-top:8px;">
     <div class="container" style="max-width:62ch;">
       <p class="eyebrow">Four branches, one house</p>
       <h1>The family, and everything worth keeping</h1>
@@ -48,7 +50,7 @@
     </div>
   </section>
 
-  <section class="section" id="albums">
+  <section class="section" data-reveal id="albums">
     <div class="container">
       <div class="row-between" style="margin-bottom:28px;">
         <div><h2>Things we took pictures of</h2></div>
@@ -58,7 +60,7 @@
     </div>
   </section>
 
-  <section class="section" id="recipes">
+  <section class="section" data-reveal id="recipes">
     <div class="container">
       <div class="row-between" style="margin-bottom:28px;">
         <div><p class="eyebrow">The recipe box</p><h2>Written down at last</h2></div>
@@ -68,7 +70,7 @@
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" data-reveal>
     <div class="container grid-2-1">
       <div>
         <div id="family-news-head" style="margin-bottom:8px;"><h2>Recent posts</h2></div>
@@ -82,7 +84,7 @@
     </div>
   </section>
 
-  <section class="section" id="directory">
+  <section class="section" data-reveal id="directory">
     <div class="container">
       <div class="row-between" style="margin-bottom:28px;">
         <div><h2>Who is where</h2></div>

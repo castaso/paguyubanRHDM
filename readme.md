@@ -25,6 +25,7 @@ external assets. Open `index.html` and it runs.
 │   ├── i18n.js            Interface translations (English keys, Indonesian values)
 │   ├── i18n-content.js    Content translations + dynamic UI strings
 │   ├── lang.js            Language switch: <html lang>, persistence, swapping
+│   ├── motion.js          Scroll reveals, parallax, hover tilt (reduced-motion aware)
 │   └── favicon.svg
 ├── supabase/              Supabase Auth + Postgres RLS
 │   ├── schema.sql         Tables, allow-list, policies — run this in Supabase
@@ -33,7 +34,7 @@ external assets. Open `index.html` and it runs.
 │   ├── server.js          HTTP server, routes, settings API
 │   ├── config.js          Environment configuration
 │   ├── lib/               oauth.js · session.js · rbac.js · supabase-token.js · static-site.js
-│   ├── test/              api.test.js (access) · design.test.js (theme, contrast, copy) · i18n.test.js (languages)
+│   ├── test/              api.test.js (access) · design.test.js (theme, contrast, copy) · i18n.test.js (languages) · motion.test.js (motion)
 │   ├── .env.example       Copy to .env and fill in
 │   ├── Dockerfile
 │   └── README.md          Backend setup + deployment
@@ -86,6 +87,8 @@ in `server/README.md`.
 | Theme default and toggle | `assets/theme.js` |
 | Site language and translations | `assets/i18n.js` (interface) + `assets/i18n-content.js` (content) |
 | Language switch behaviour | `assets/lang.js` |
+| Motion and hover physics | `assets/motion.js` + the motion block in `assets/styles.css` |
+| The marquee ticker | `assets/app.js` → `initTicker()` |
 
 ### Adding a listing
 
@@ -284,6 +287,34 @@ That suite guards the dictionary: no empty or duplicate entries, no orphan keys
 that no longer exist in the source, a translation for every listing and member,
 and a content map whose shape still matches `data.js`. Add a string to the site
 without translating it and the suite tells you which one is missing.
+
+## Motion and the graphic layer
+
+The revamp went bold and graphic: a heavy display face, thick section rules,
+hard offset shadows on hover, an oversized outlined word behind the hero, and
+four moving parts.
+
+| Moving part | Markup | Driven by |
+|---|---|---|
+| Scroll reveals | `[data-reveal]` | IntersectionObserver adds `.is-in` |
+| Parallax layers | `[data-parallax="0.16"]` | rAF transform on scroll |
+| Card hover physics | `[data-tilt]` | pointer move, fine pointers only |
+| Marquee ticker | `.ticker-track` | CSS keyframes, filled by `initTicker()` |
+
+Three rules it follows:
+
+- **Opt-in, never opt-out.** Reveal content is only hidden once `motion.js` has
+  confirmed motion is welcome (it sets `html[data-motion="on"]`). If the script
+  is blocked or absent, everything renders visible. Hiding content behind a
+  script that may never run is how sites go blank.
+- **`prefers-reduced-motion` wins.** `motion.js` returns immediately and the
+  stylesheet disables all four parts, so the page is fully static and complete.
+- **No library.** The host's CSP blocks external scripts and there is no build
+  step, so the engine is hand-written and dependency-free.
+
+```bash
+node server/test/motion.test.js
+```
 
 ## Quality notes
 
