@@ -1,4 +1,4 @@
-/* Alder House — shared front-end logic.
+/* Alder House, shared front-end logic.
    Single source of truth is window.ALDER (data.js). No external requests. */
 (function () {
   "use strict";
@@ -440,7 +440,7 @@
       { id: "category", label: "Category", test: function (v) { return v ? "" : "Pick a category."; } },
       { id: "price", label: "Price", test: function (v) { if (v.trim() === "") return "Enter a price, or 0 for free / borrow."; var n = Number(v); return (isNaN(n) || n < 0) ? "Price must be a number of 0 or more." : ""; } },
       { id: "place", label: "Where it is", test: function (v) { return v.trim() ? "" : "Tell people where to find it."; } },
-      { id: "description", label: "Description", test: function (v) { return v.trim().length >= 20 && v.trim().length <= 600 ? "" : (v.trim().length < 20 ? "Write at least 20 characters — a sentence or two." : "Keep it under 600 characters."); } }
+      { id: "description", label: "Description", test: function (v) { return v.trim().length >= 20 && v.trim().length <= 600 ? "" : (v.trim().length < 20 ? "Write at least 20 characters, a sentence or two." : "Keep it under 600 characters."); } }
     ];
 
     function fieldWrap(f) { return document.getElementById(f.id); }

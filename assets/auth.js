@@ -1,4 +1,4 @@
-/* Alder House — settings panel + RBAC sign-in.
+/* Alder House, settings panel + RBAC sign-in.
  *
  * The site itself is PUBLIC. Sign-in is only offered from the invisible
  * settings cog in the top-right of the header: clicking it opens the panel,
@@ -6,15 +6,15 @@
  *
  * Three modes, chosen by CFG.authMode:
  *
- *   "prototype" (default) — browser-only. Required on the static preview, which
+ *   "prototype" (default), browser-only. Required on the static preview, which
  *       has no server. CAN BE BYPASSED; it guards a settings panel, not content.
  *
- *   "supabase" — Supabase Auth with the Google provider, via
+ *   "supabase", Supabase Auth with the Google provider, via
  *       assets/supabase-auth.js (no SDK, no CDN). Set supabase.url +
- *       supabase.anonKey. Enforcement belongs in Postgres RLS — see
+ *       supabase.anonKey. Enforcement belongs in Postgres RLS, see
  *       supabase/schema.sql.
  *
- *   "server"  — the backend in ../server (Google OAuth directly + signed session
+ *   "server" , the backend in ../server (Google OAuth directly + signed session
  *       cookie). Set authMode:"server" and apiBase.
  */
 (function () {
@@ -28,14 +28,14 @@
     apiBase: "",
 
     /* Supabase project settings (authMode: "supabase"). The anon key is a
-       public client key — it is not a secret. */
+       public client key, it is not a secret. */
     supabase: {
       url: "",                        // e.g. "https://abcdefgh.supabase.co"
       anonKey: "",                    // Project Settings → API → anon public
       storageKey: "alderhouse.supabase.session"
     },
 
-    /* RBAC — the same list must exist in supabase/schema.sql (server-enforced). */
+    /* RBAC, the same list must exist in supabase/schema.sql (server-enforced). */
     allowedEmails: ["paguyubanRHDM@gmail.com", "castasoft@gmail.com"],
     sessionKey: "alderhouse.session.v1",
     prototype: true
@@ -150,7 +150,7 @@
         ? '<p class="auth-error" role="alert">' + esc(authError) + "</p>"
         : "";
       var denied = supabaseDenied
-        ? '<p class="auth-error" role="alert">Access denied — ' + esc(supabaseDenied) +
+        ? '<p class="auth-error" role="alert">Access denied, ' + esc(supabaseDenied) +
           " is not on the access list (RBAC). Only approved family accounts may sign in.</p>"
         : "";
       return googleButton("signin-google") +
@@ -168,7 +168,7 @@
     /* Prototype. */
     return googleButton("signin-start") +
       '<div id="signin-step2" hidden style="margin-top:14px;">' +
-        '<p class="auth-note">Google\'s account chooser cannot load on this static preview — cross-origin requests are blocked here. Enter the account email to continue. On a real deployment this step is Google\'s.</p>' +
+        '<p class="auth-note">Google\'s account chooser cannot load on this static preview, cross-origin requests are blocked here. Enter the account email to continue. On a real deployment this step is Google\'s.</p>' +
         '<form id="signin-form" novalidate>' +
           '<div class="field" style="margin-bottom:10px;">' +
             '<label for="signin-email">Google account email</label>' +
@@ -204,19 +204,19 @@
       '<ul class="settings-list" id="settings-allow"></ul>' +
       '<p class="meta" style="margin-top:12px;">' +
         (MODE === "supabase"
-          ? 'Client list: <span class="kbd">assets/auth.js</span> → <span class="kbd">allowedEmails</span>. Enforced list: the <span class="kbd">allowed_emails</span> table + RLS in <span class="kbd">supabase/schema.sql</span> — keep the two in sync.'
+          ? 'Client list: <span class="kbd">assets/auth.js</span> → <span class="kbd">allowedEmails</span>. Enforced list: the <span class="kbd">allowed_emails</span> table + RLS in <span class="kbd">supabase/schema.sql</span>, keep the two in sync.'
           : 'Edit the list in <span class="kbd">assets/auth.js</span> → <span class="kbd">allowedEmails</span> (prototype) or the server\'s <span class="kbd">ALLOWED_EMAILS</span> env var (server mode).') +
       "</p>" +
     "</section>";
 
   function enforceText() {
     if (MODE === "supabase") {
-      return "Supabase Auth verifies the Google identity and hands this page a signed session. The allow-list is enforced in Postgres with row level security, so the database itself refuses a non-listed account — see <span class=\"kbd\">supabase/schema.sql</span>.";
+      return "Supabase Auth verifies the Google identity and hands this page a signed session. The allow-list is enforced in Postgres with row level security, so the database itself refuses a non-listed account, see <span class=\"kbd\">supabase/schema.sql</span>.";
     }
     if (MODE === "server") {
       return "Enforced on the server: Google OAuth 2.0, a verified ID token or Supabase JWT, a signed HttpOnly session cookie, and the allow-list re-checked on every request.";
     }
-    return "This protects the settings panel, not the site — the pages stay public. The check currently runs in the browser and can be bypassed; real enforcement needs Supabase RLS or the server in <span class=\"kbd\">server/</span>. See <span class=\"kbd\">README.md</span>.";
+    return "This protects the settings panel, not the site, the pages stay public. The check currently runs in the browser and can be bypassed; real enforcement needs Supabase RLS or the server in <span class=\"kbd\">server/</span>. See <span class=\"kbd\">README.md</span>.";
   }
 
   /* ── the cog + panel ──────────────────────────────────────────────── */
@@ -315,7 +315,7 @@
           return;
         }
         if (!window.ALDER_AUTH.signIn(val)) {
-          error.textContent = "Access denied — " + normalize(val) + " is not on the access list (RBAC). Only approved family accounts may sign in.";
+          error.textContent = "Access denied, " + normalize(val) + " is not on the access list (RBAC). Only approved family accounts may sign in.";
           email.setAttribute("aria-invalid", "true");
           email.focus();
           return;

@@ -1,6 +1,6 @@
-/* Alder House — zero-dependency Supabase Auth client.
+/* Alder House, zero-dependency Supabase Auth client.
  *
- * Talks to the Supabase Auth REST API directly (no supabase-js, no CDN — the
+ * Talks to the Supabase Auth REST API directly (no supabase-js, no CDN, the
  * host's CSP blocks external scripts). Uses the implicit OAuth flow, which is
  * the right fit for a client-only static site:
  *
@@ -12,7 +12,7 @@
  *      GET {url}/auth/v1/user
  *
  * The anon key is a public client key by design; it is not a secret.
- * Real enforcement of the allow-list belongs in Postgres RLS — see
+ * Real enforcement of the allow-list belongs in Postgres RLS, see
  * supabase/schema.sql.
  */
 (function () {

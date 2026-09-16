@@ -7,6 +7,7 @@
 <meta name="description" content="How the Alder House family market works, the house rules, and who to ask when something is wrong." />
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 <link rel="stylesheet" href="assets/styles.css" />
+  <script src="assets/theme.js"></script>
   <script src="assets/supabase-auth.js"></script>
   <script src="assets/auth.js"></script>
 </head>
@@ -47,9 +48,9 @@
 
   <section class="section">
     <div class="container">
-      <p class="eyebrow">How the market works</p>
+      
       <h2 style="margin-bottom:32px;">Three steps, and then you talk to a relative</h2>
-      <div class="grid-3">
+      <div class="steps">
         <div class="card card-flat">
           <div class="feature-mark" style="width:36px;height:36px;display:grid;place-items:center;border:1px solid var(--border);border-radius:10px;color:var(--accent);margin-bottom:18px;">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
@@ -62,14 +63,14 @@
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg>
           </div>
           <h3>2 · Message the person</h3>
-          <p class="muted" style="font-size:14.5px;">Open a listing and message the seller. There is no cart and no checkout — you are talking to your cousin, not a shop.</p>
+          <p class="muted" style="font-size:14.5px;">Open a listing and message the seller. There is no cart and no checkout, you are talking to your cousin, not a shop.</p>
         </div>
         <div class="card card-flat">
           <div class="feature-mark" style="width:36px;height:36px;display:grid;place-items:center;border:1px solid var(--border);border-radius:10px;color:var(--accent);margin-bottom:18px;">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v18"/><path d="M5 10c0-4 3-7 7-7s7 3 7 7"/></svg>
           </div>
           <h3>3 · Sort it out between you</h3>
-          <p class="muted" style="font-size:14.5px;">Agree a price, a pickup, and a time. Cash or a favour, at the gate or at the reunion — whatever the two of you decide.</p>
+          <p class="muted" style="font-size:14.5px;">Agree a price, a pickup, and a time. Cash or a favour, at the gate or at the reunion, whatever the two of you decide.</p>
         </div>
       </div>
     </div>
@@ -78,7 +79,7 @@
   <section class="section">
     <div class="container grid-2-1">
       <div>
-        <p class="eyebrow">House rules</p>
+        
         <h2 style="margin-bottom:24px;">Four things everyone agreed to</h2>
         <ol class="muted" style="font-size:16px;line-height:1.8;padding-left:20px;max-width:60ch;">
           <li><strong style="color:var(--fg);">Be kind.</strong> It is a market between relatives. A grudge costs more than the table.</li>
@@ -88,7 +89,7 @@
         </ol>
       </div>
       <aside class="card">
-        <p class="eyebrow">Who to ask</p>
+        
         <p class="muted" style="font-size:14.5px;">Anything broken, missing, or wrong on the site goes to the organiser. Anything wrong with a listing goes to the person who posted it.</p>
         <p class="muted" style="font-size:14.5px;margin-top:10px;">Posting and managing listings is limited to the admins.</p>
         <p style="margin:18px 0 6px;font-weight:600;" data-organizer>Marcus Alder</p>
@@ -106,15 +107,15 @@
           <tr><th scope="col">Category</th><th scope="col">What goes in it</th><th scope="col">Typical price</th></tr>
         </thead>
         <tbody>
-          <tr><td>Handmade</td><td>Things you made — knitting, preserves, bread, starter</td><td class="num-col">$5–40</td></tr>
-          <tr><td>Second-hand</td><td>Furniture, tools, cameras, anything being passed on</td><td class="num-col">$20–250</td></tr>
-          <tr><td>Services</td><td>Lessons, repairs, retouching, a pair of hands</td><td class="num-col">$25–60</td></tr>
-          <tr><td>Produce</td><td>Eggs, seedlings, gluts of anything from the garden</td><td class="num-col">$5–6</td></tr>
+          <tr><td>Handmade</td><td>Things you made, knitting, preserves, bread, starter</td><td class="num-col">$5-40</td></tr>
+          <tr><td>Second-hand</td><td>Furniture, tools, cameras, anything being passed on</td><td class="num-col">$20-250</td></tr>
+          <tr><td>Services</td><td>Lessons, repairs, retouching, a pair of hands</td><td class="num-col">$25-60</td></tr>
+          <tr><td>Produce</td><td>Eggs, seedlings, gluts of anything from the garden</td><td class="num-col">$5-6</td></tr>
           <tr><td>Rentals</td><td>Trailers, tools, and gear on loan</td><td class="num-col">Free to family</td></tr>
           <tr><td>Digital</td><td>Recipe books, scans, files</td><td class="num-col">$8</td></tr>
         </tbody>
       </table>
-      <p class="meta" style="margin-top:14px;">Prices are what the family actually charges, drawn from the <span data-count-listings>12</span> live listings and grouped by category — not invented for a table.</p>
+      <p class="meta" style="margin-top:14px;">Prices are what the family actually charges, drawn from the <span data-count-listings>12</span> live listings and grouped by category, not invented for a table.</p>
     </div>
   </section>
 
@@ -124,7 +125,7 @@
       <p class="lead" style="margin:16px auto 28px;">Have a look at what is already on there. Listings are set up by the family admins, so send them anything you want on the market.</p>
       <div class="hero-cta" style="justify-content:center;">
         <a class="btn btn-primary" href="marketplace.html">Browse the market</a>
-        <a class="btn btn-secondary" href="events.html">See what's coming up</a>
+        <a class="btn btn-secondary" href="events.html">Full calendar</a>
       </div>
     </div>
   </section>
@@ -138,7 +139,7 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10.5V20h13v-9.5"/></svg>
           Alder House
         </a>
-        <p class="muted" style="max-width:34ch;margin-top:12px;">The Alder family's own corner of the internet — news, photos, dates, recipes, and a market run by relatives.</p>
+        <p class="muted" style="max-width:34ch;margin-top:12px;">The Alder family's own corner of the internet, news, photos, dates, recipes, and a market run by relatives.</p>
       </div>
       <div><h4>The site</h4><div class="foot-links"><a href="index.html">Home</a><a href="family.html">Family</a><a href="events.html">Calendar</a><a href="about.html">About</a></div></div>
       <div><h4>The market</h4><div class="foot-links"><a href="marketplace.html">All listings</a><a href="marketplace.html?cat=handmade">Handmade</a><a href="marketplace.html?cat=services">Services</a><a href="marketplace.html?cat=rentals">Rentals</a></div></div>

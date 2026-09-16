@@ -21,6 +21,7 @@ external assets. Open `index.html` and it runs.
 │   ├── app.js             Filtering, detail rendering, form validation, chrome
 │   ├── auth.js            Settings panel + sign-in (three modes, see below)
 │   ├── supabase-auth.js   Zero-dependency Supabase Auth client
+│   ├── theme.js           Light / dark theme, applied before first paint
 │   └── favicon.svg
 ├── supabase/              Supabase Auth + Postgres RLS
 │   ├── schema.sql         Tables, allow-list, policies — run this in Supabase
@@ -29,7 +30,7 @@ external assets. Open `index.html` and it runs.
 │   ├── server.js          HTTP server, routes, settings API
 │   ├── config.js          Environment configuration
 │   ├── lib/               oauth.js · session.js · rbac.js · supabase-token.js · static-site.js
-│   ├── test/api.test.js   API + access-control tests
+│   ├── test/              api.test.js (access control) · design.test.js (theme, contrast, copy rules)
 │   ├── .env.example       Copy to .env and fill in
 │   ├── Dockerfile
 │   └── README.md          Backend setup + deployment
@@ -78,6 +79,8 @@ in `server/README.md`.
 | Which sign-in provider is used | `assets/auth.js` → `authMode` (`prototype` / `supabase` / `server`) |
 | Supabase project + keys | `assets/auth.js` → `supabase.url` / `supabase.anonKey` |
 | The settings panel (the cog) | `assets/auth.js` → `buildSettings()` |
+| Theme colours | `assets/styles.css` → the `:root` and `[data-theme="dark"]` blocks |
+| Theme default and toggle | `assets/theme.js` |
 
 ### Adding a listing
 
@@ -218,6 +221,34 @@ apiBase: "",          // "" = same origin, or the backend's origin
 Until you do, the prototype gate runs and the allow-list lives in **two**
 places — keep `assets/auth.js` → `allowedEmails` in sync with the server's
 `ALLOWED_EMAILS`.
+
+## Theme (light / dark)
+
+A toggle sits in the header beside the settings cog. It starts from the system
+preference, and once you use it your choice is remembered
+(`localStorage["alderhouse.theme"]`).
+
+Both themes come from one token set, so no colour is written twice:
+
+- `assets/styles.css` → `:root` is light; `[data-theme="dark"]` re-tunes every
+  colour token (18 of them). It is a re-tune, not an inversion: dark surfaces are
+  warm near-black rather than black, borders are re-weighted so they read as
+  structure without noise, media tints go muted, and the accent is lightened so
+  it still works as text.
+- `assets/theme.js` runs in `<head>`, so the attribute is set before the first
+  paint and there is no flash of the wrong theme.
+- Contrast is enforced by `server/test/design.test.js`, which reads both token
+  blocks and computes WCAG ratios, so a later colour edit cannot quietly fall
+  below AA.
+
+```bash
+node server/test/design.test.js
+```
+
+That suite also holds the house copy rules: no em or en dashes in anything
+visible, at most one eyebrow per three sections, and at most one middle dot per
+line. Those are the anti-template guards, and they fail the build rather than
+being a matter of taste.
 
 ## Quality notes
 

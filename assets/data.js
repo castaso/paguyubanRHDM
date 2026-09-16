@@ -1,4 +1,4 @@
-/* Alder House — content model (mock data).
+/* Alder House, content model (mock data).
    Swap these arrays for a real source later; every page reads from here. */
 (function () {
   "use strict";
@@ -38,7 +38,7 @@
       details: [
         "182 × 92 cm, seats eight comfortably",
         "Solid oak, refinished 2025",
-        "One water ring on the north corner — photographed",
+        "One water ring on the north corner, photographed",
         "Pickup only; we can help you load it"
       ],
       tags: ["furniture", "pickup", "refinished"]
@@ -56,7 +56,7 @@
         "Active starter, ready to feed",
         "One-page feeding guide included",
         "Bring your own jar or take one of mine",
-        "Free refill if it dies in the first month — that is on you though"
+        "Free refill if it dies in the first month, that is on you though"
       ],
       tags: ["bread", "kitchen", "beginner-friendly"]
     },
@@ -71,7 +71,7 @@
       blurb: "Merino, machine-washable by accident and dryer-safe by no means. Tell me your size and your colours and I will get going.",
       details: [
         "100% merino, two-ply",
-        "Sizes 36–47 EU",
+        "Sizes 36-47 EU",
         "Pick your colour stripe",
         "Two-week turnaround in reunion season"
       ],
@@ -82,7 +82,7 @@
       title: "Beginner guitar lessons, 30 minutes",
       category: "services",
       price: 25, priceUnit: "/ session",
-      condition: "—",
+      condition: "n/a",
       seller: "Theo Alder", place: "Bend, OR",
       posted: "2026-09-08", tint: "--tint-4",
       blurb: "For anyone who got a guitar for their birthday and has not touched it since. Video call or in person when you are in town.",
@@ -90,7 +90,7 @@
         "30 minutes, video or in person",
         "First session free for anyone under 16",
         "Bring a guitar that stays in tune",
-        "I am slow to reply to email — text instead"
+        "I am slow to reply to email, text instead"
       ],
       tags: ["music", "lessons", "kids-welcome"]
     },
@@ -107,22 +107,22 @@
         "Mixed-brown, collected daily",
         "Honour box on the porch",
         "Limit two dozen a week so everyone gets some",
-        "No eggs the week of the reunion — the hens get a break too"
+        "No eggs the week of the reunion, the hens get a break too"
       ],
       tags: ["eggs", "weekly", "porch-pickup"]
     },
     {
       id: "trailer-loan-july",
-      title: "Camping trailer loan — one week",
+      title: "Camping trailer loan, one week",
       category: "rentals",
       price: 0, priceUnit: "",
       condition: "Borrow",
       seller: "Dev Okafor", place: "Boise, ID",
       posted: "2026-09-05", tint: "--tint-2",
-      blurb: "Sleeps four, tows fine behind anything with a hitch. Free to family — I just want it back with the water tank emptied.",
+      blurb: "Sleeps four, tows fine behind anything with a hitch. Free to family, I just want it back with the water tank emptied.",
       details: [
         "Sleeps four, small kitchenette",
-        "Booked for reunion week — ask for another week",
+        "Booked for reunion week, ask for another week",
         "Return with water tank emptied and interior swept",
         "You arrange the hitch and the insurance"
       ],
@@ -156,7 +156,7 @@
       blurb: "Serviced this spring, light seals replaced, shutter accurate. Comes with two rolls so you can start immediately.",
       details: [
         "35mm SLR, 50mm f/1.8 lens",
-        "Serviced spring 2026 — light seals replaced",
+        "Serviced spring 2026, light seals replaced",
         "Two rolls of film included",
         "Happy to walk you through your first roll"
       ],
@@ -175,7 +175,7 @@
         "Six seedlings per pack, mixed varieties",
         "Hardened off and ready for the ground",
         "Bring a flat to carry them",
-        "Ask me anything — I will tell you anyway"
+        "Ask me anything, I will tell you anyway"
       ],
       tags: ["gardening", "spring", "vegetables"]
     },
@@ -184,7 +184,7 @@
       title: "Wedding & reunion photo retouching",
       category: "services",
       price: 60, priceUnit: "/ batch",
-      condition: "—",
+      condition: "n/a",
       seller: "Priya Raman", place: "Boise, ID",
       posted: "2026-08-28", tint: "--tint-5",
       blurb: "Send me the ones you would frame. I fix colour, dust, and the uncle who blinked, and send back print-ready files.",
@@ -221,7 +221,7 @@
       condition: "New",
       seller: "Pearl Alder", place: "Coyote Creek, OR",
       posted: "2026-08-24", tint: "--tint-1",
-      blurb: "Made the week the frost came early. The recipe is finally written down — this is the batch that made us write it down.",
+      blurb: "Made the week the frost came early. The recipe is finally written down, this is the batch that made us write it down.",
       details: [
         "500 ml jar, properly sealed",
         "Keeps a year in a cool cupboard",
@@ -249,7 +249,7 @@
   ];
 
   var RECIPES = [
-    { title: "Pearl's cinnamon knots", by: "Pearl Alder", minutes: 180, tags: ["Baking", "Sunday"], note: "The ones that show up at every reunion. Dough rests overnight — do not rush it." },
+    { title: "Pearl's cinnamon knots", by: "Pearl Alder", minutes: 180, tags: ["Baking", "Sunday"], note: "The ones that show up at every reunion. Dough rests overnight, do not rush it." },
     { title: "Coyote Creek chili", by: "Al Alder", minutes: 120, tags: ["Dinner", "Big batch"], note: "Feeds a barn. Al insists on the coffee in it and will not be negotiating." },
     { title: "June's sourdough, properly written down", by: "June Whitlock", minutes: 1440, tags: ["Bread", "Slow"], note: "The one-page guide that comes with the starter, typed out for anyone who lost theirs." },
     { title: "Green tomato relish", by: "Pearl Alder", minutes: 90, tags: ["Preserves", "Autumn"], note: "Recovered in 2026 after eleven years of everyone assuming someone else had it." }
