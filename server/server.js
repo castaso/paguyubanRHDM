@@ -19,6 +19,7 @@ const { createRbac } = require("./lib/rbac");
 const { createSession, parseCookies } = require("./lib/session");
 const oauth = require("./lib/oauth");
 const staticSite = require("./lib/static-site");
+const supabaseToken = require("./lib/supabase-token");
 
 const rbac = createRbac(config.allowedEmails);
 const session = createSession(config.session);
@@ -97,11 +98,31 @@ function safeNext(value) {
  * still enter — so removing someone from ALLOWED_EMAILS revokes their session
  * on the very next request.
  */
-function currentUser(req) {
-  const s = session.read(req.headers.cookie);
-  if (!s) return null;
-  if (!rbac.isAllowed(s.email)) return null;
-  return s;
+async function currentUser(req) {
+  // 1. Our own signed session cookie (server-mode sign-in).
+  const cookie = session.read(req.headers.cookie);
+  if (cookie && rbac.isAllowed(cookie.email)) {
+    return { email: cookie.email, provider: cookie.provider || "google", via: "cookie" };
+  }
+
+  // 2. A Supabase access token (supabase-mode sign-in), verified HERE so the
+  //    allow-list is never decided by the browser.
+  const token = bearerToken(req);
+  if (token && config.supabase.url) {
+    try {
+      const claims = await supabaseToken.verifySupabaseToken(token, config.supabase);
+      const email = rbac.normalize(claims.email);
+      if (rbac.isAllowed(email)) return { email, provider: "supabase", via: "bearer" };
+    } catch (err) {
+      // expired / forged / not allowed — treat as anonymous
+    }
+  }
+  return null;
+}
+
+function bearerToken(req) {
+  const m = /^Bearer\s+(.+)$/i.exec(String(req.headers.authorization || "").trim());
+  return m ? m[1] : null;
 }
 
 /* ── pages ──────────────────────────────────────────────────────────── */
@@ -264,7 +285,7 @@ async function handle(req, res) {
   const pathname = url.pathname;
 
   if (pathname === "/healthz") {
-    const s = currentUser(req);
+    const s = await currentUser(req);
     return sendJson(res, 200, {
       ok: true,
       uptimeSeconds: Math.round(process.uptime()),
@@ -286,7 +307,7 @@ async function handle(req, res) {
   }
 
   if (pathname === "/api/settings") {
-    const s = currentUser(req);
+    const s = await currentUser(req);
     if (!s) {
       return sendJson(res, 401, { error: "unauthorized", signInUrl: "/auth/google" });
     }

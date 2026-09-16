@@ -35,6 +35,15 @@ module.exports = {
       `http://localhost:${process.env.PORT || 8787}/auth/google/callback`,
   },
 
+  // Supabase Auth (optional): lets the API accept a Supabase access token
+  // alongside our own signed session cookie.
+  supabase: {
+    url: process.env.SUPABASE_URL || "",
+    anonKey: process.env.SUPABASE_ANON_KEY || "",
+    // Only needed for HS256-signed tokens (legacy Supabase projects).
+    jwtSecret: process.env.SUPABASE_JWT_SECRET || "",
+  },
+
   session: {
     secret: process.env.SESSION_SECRET || "",
     cookieName: process.env.SESSION_COOKIE || "alder_session",

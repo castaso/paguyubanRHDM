@@ -173,16 +173,18 @@ page. Every page reachable in one tap from anywhere.
   when signed in.
 - **FR8.5** Session persists across pages and reloads; Sign out returns the panel
   to the sign-in step.
-- **FR8.6** A **server-side backend** (see `server/`) implements the real flow:
-  Google OAuth 2.0 Authorization Code + PKCE, ID-token verification against
-  Google's JWKS, server-enforced RBAC on every request, a signed HttpOnly
-  session cookie, and page gating. The static host cannot run it, so the backend
-  deploys separately (a container host) and the front end switches to it with
-  `authMode: "server"`.
+- **FR8.6** Sign-in is provider-pluggable, chosen by `assets/auth.js` →
+  `authMode`:
+  - `supabase` — **Supabase Auth** with the Google provider, via a
+    zero-dependency REST client (`assets/supabase-auth.js`); the allow-list is
+    enforced by **Postgres row level security** (`supabase/schema.sql`).
+  - `server` — the Node backend in `server/`: Google OAuth 2.0 (Authorization
+    Code + PKCE), ID-token verification against Google's JWKS, server-enforced
+    RBAC on every request, signed HttpOnly session cookie.
 - **FR8.7 (constraint)** On the **static preview channel only**, the gate
   necessarily falls back to the browser-side prototype, because that host has no
-  server and its CSP blocks Google's script. The prototype is labelled as such
-  on screen and in `assets/auth.js`.
+  server and its CSP blocks Google's and Supabase's origins. The prototype is
+  labelled as such on screen and in `assets/auth.js`.
 
 ---
 
@@ -260,13 +262,14 @@ notification emails.
 discovery and connection.
 
 **Known constraint — where access control is enforced.** Real enforcement lives
-in the backend under `server/` (Google OAuth + a verified ID token + a signed
-session + the allow-list checked on every request). The **static preview channel
-cannot run a backend** and its CSP blocks Google's script, so on that channel the
-gate degrades to the browser-side prototype in `assets/auth.js`, which is
-bypassable and labelled as such. Deploying the backend and setting
-`authMode: "server"` closes that gap. This is a deliberate, labelled split — not
-an oversight.
+in one of two places: the backend under `server/` (Google OAuth + a verified ID
+token + a signed session + the allow-list checked on every request), or
+Supabase — where the **`allowed_emails` table plus Postgres RLS** is the
+referee. The **static preview channel can run neither**: its CSP blocks
+Google's and Supabase's origins, so on that channel the gate degrades to the
+browser-side prototype in `assets/auth.js`, which is bypassable and labelled as
+such. Deploying with `authMode: "supabase"` or `"server"` closes that gap.
+This is a deliberate, labelled split — not an oversight.
 
 ---
 

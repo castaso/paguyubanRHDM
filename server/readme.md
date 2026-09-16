@@ -18,7 +18,8 @@ Zero dependencies — Node's built-ins only (`node:crypto`, `node:http`, global
    immediately.
 5. Serves the site **publicly**. Pages are open; the guarded surface is the
    settings area — `/auth/*` and `/api/settings`. The browser never decides who
-   gets in.
+   gets in. It accepts either its own signed cookie **or a verified Supabase
+   access token**.
 
 ## Setup
 
@@ -72,6 +73,9 @@ Everything is environment-driven — see `.env.example`.
 | `OAUTH_REDIRECT_URI` | `http://localhost:PORT/auth/google/callback` | Must match Google's config exactly |
 | `SESSION_SECRET` | — | Required; HMAC key for session cookies |
 | `ALLOWED_EMAILS` | the two family addresses | The RBAC list |
+| `SUPABASE_URL` | — | Set it to accept Supabase access tokens at `/api/settings` |
+| `SUPABASE_ANON_KEY` | — | Supabase anon (public) key |
+| `SUPABASE_JWT_SECRET` | — | Only for HS256-signed (legacy) Supabase projects |
 | `SESSION_TTL_SECONDS` | `1209600` (14 days) | Session lifetime |
 | `SECURE_COOKIES` | `1` when `NODE_ENV=production` | Set to 1 behind HTTPS |
 | `PORT` / `HOST` | `8787` / `0.0.0.0` | |
@@ -106,6 +110,18 @@ apiBase: "",          // "" = same origin; or "https://auth.example.com"
 
 The header's settings cog then shows a *server session* and signs out through
 `/auth/signout`.
+
+## Accepting Supabase sessions
+
+If the site signs in with Supabase (`authMode: "supabase"`), the API can accept
+that session as well. Set `SUPABASE_URL` — plus `SUPABASE_JWT_SECRET` if the
+project still signs HS256 (Project Settings → API → JWT Settings). Newer
+RS256/ES256 projects need only the URL: the server fetches the project's JWKS
+and verifies the signature itself.
+
+`currentUser()` then accepts **either** our signed cookie **or** a verified
+Supabase bearer token, and applies the allow-list to both — so the same two
+addresses govern every route, whichever way the visitor signed in.
 
 ## Security notes
 
