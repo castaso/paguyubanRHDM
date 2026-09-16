@@ -624,6 +624,12 @@ html[data-motion="on"] [data-reveal-delay="4"] { transition-delay: .28s; }
     padding: 14px 0 18px; border-top: 1px solid var(--border);
   }
   .nav-drawer .topnav-actions .btn { flex: 1 1 100%; justify-content: center; }
-  /* the cog is deliberately faint on desktop; inside the drawer it must be obvious */
-  html[data-nav-open="true"] .nav-drawer .cog { opacity: 1; }
+}
+
+/* The settings cog is a transparent control: no ambient reveal, including in the
+   open mobile drawer, where it would otherwise sit permanently on screen.
+   Touch devices have no hover, so the first tap arms it and the second opens the
+   panel (see the cog handler in assets/auth.js). */
+@media (hover: none) {
+  .cog[data-armed="true"] { opacity: 1; color: var(--fg); background: var(--fg-soft); }
 }

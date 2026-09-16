@@ -124,12 +124,20 @@ check(
 /* N11 the cog is transparent at rest, revealed only on intent */
 const cogBase = /\.cog \{[\s\S]*?opacity: 0;/.test(css);
 const cogReveal = /\.cog:hover, \.cog:focus-visible, \.cog\[aria-expanded="true"\] \{ opacity: 1;/.test(css);
-const noAmbientReveal = !/\.topnav-inner:hover \.cog/.test(css) && !/@media \(hover: none\) \{ \.cog/.test(css);
+const noAmbientReveal =
+  !/\.topnav-inner:hover \.cog/.test(css) &&
+  !/@media \(hover: none\) \{ \.cog \{/.test(css) &&
+  !/nav-drawer \.cog \{ opacity: 1/.test(css);
 check(
   "the cog is transparent at rest and shown on intent",
   cogBase && cogReveal && noAmbientReveal,
   "atRest=" + cogBase + " onIntent=" + cogReveal + " noAmbientReveal=" + noAmbientReveal
 );
+
+/* N12 touch devices still have a way in, without a visible button */
+const authSrc = read("assets/auth.js");
+const armedOk = /\.cog\[data-armed="true"\]/.test(css) && /data-armed/.test(authSrc) && /hover: none/.test(authSrc);
+check("touch can reveal the cog by tapping it", armedOk, "css=" + /\.cog\[data-armed="true"\]/.test(css) + " js=" + /data-armed/.test(authSrc));
 
 const passed = results.filter((r) => r.ok).length;
 const failed = results.length - passed;

@@ -356,7 +356,19 @@
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     }
 
-    cog.addEventListener("click", function () { scrim.hidden ? open() : close(); });
+    /* On a touch device there is no hover, so the cog would be unreachable while
+       transparent. The first tap arms it (reveals it), the second opens the
+       panel. On hover-capable devices it behaves as a normal button. */
+    function noHover() {
+      return !!(window.matchMedia && window.matchMedia("(hover: none)").matches);
+    }
+    cog.addEventListener("click", function () {
+      if (noHover() && cog.getAttribute("data-armed") !== "true") {
+        cog.setAttribute("data-armed", "true");
+        return;
+      }
+      scrim.hidden ? open() : close();
+    });
     scrim.addEventListener("click", function (e) { if (e.target === scrim) close(); });
     document.getElementById("settings-close").addEventListener("click", close);
 
