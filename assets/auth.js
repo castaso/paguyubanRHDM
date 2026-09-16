@@ -275,6 +275,7 @@
           : "";
       }
       applyAdminGate();
+      if (window.ALDER_LANG) window.ALDER_LANG.apply();
 
       var out = document.getElementById("settings-signout");
       if (out) {

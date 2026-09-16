@@ -22,6 +22,9 @@ external assets. Open `index.html` and it runs.
 │   ├── auth.js            Settings panel + sign-in (three modes, see below)
 │   ├── supabase-auth.js   Zero-dependency Supabase Auth client
 │   ├── theme.js           Light / dark theme, applied before first paint
+│   ├── i18n.js            Interface translations (English keys, Indonesian values)
+│   ├── i18n-content.js    Content translations + dynamic UI strings
+│   ├── lang.js            Language switch: <html lang>, persistence, swapping
 │   └── favicon.svg
 ├── supabase/              Supabase Auth + Postgres RLS
 │   ├── schema.sql         Tables, allow-list, policies — run this in Supabase
@@ -30,7 +33,7 @@ external assets. Open `index.html` and it runs.
 │   ├── server.js          HTTP server, routes, settings API
 │   ├── config.js          Environment configuration
 │   ├── lib/               oauth.js · session.js · rbac.js · supabase-token.js · static-site.js
-│   ├── test/              api.test.js (access control) · design.test.js (theme, contrast, copy rules)
+│   ├── test/              api.test.js (access) · design.test.js (theme, contrast, copy) · i18n.test.js (languages)
 │   ├── .env.example       Copy to .env and fill in
 │   ├── Dockerfile
 │   └── README.md          Backend setup + deployment
@@ -81,6 +84,8 @@ in `server/README.md`.
 | The settings panel (the cog) | `assets/auth.js` → `buildSettings()` |
 | Theme colours | `assets/styles.css` → the `:root` and `[data-theme="dark"]` blocks |
 | Theme default and toggle | `assets/theme.js` |
+| Site language and translations | `assets/i18n.js` (interface) + `assets/i18n-content.js` (content) |
+| Language switch behaviour | `assets/lang.js` |
 
 ### Adding a listing
 
@@ -249,6 +254,36 @@ That suite also holds the house copy rules: no em or en dashes in anything
 visible, at most one eyebrow per three sections, and at most one middle dot per
 line. Those are the anti-template guards, and they fail the build rather than
 being a matter of taste.
+
+## Languages (English / Bahasa Indonesia)
+
+A two-segment switch sits in the header (EN / ID) beside the theme toggle. The
+choice is remembered (`localStorage["alderhouse.lang"]`), and `<html lang>` is
+set to `en` or `id` to match, so screen readers and translation tools follow it.
+
+How it works, given there is no build step:
+
+- **English is the source of truth** in the markup. `assets/i18n.js` maps each
+  English string to its Indonesian equivalent; `assets/i18n-content.js` adds the
+  runtime strings app.js builds plus the content map for listings, members,
+  events, recipes and categories.
+- `assets/lang.js` runs from `<head>`, so the language is settled before the
+  first paint. It swaps matching text nodes and attributes (`placeholder`,
+  `aria-label`, `title`, `alt`, the meta description and the document title),
+  and stashes the originals so switching back is lossless.
+- Anything without an entry stays in English, so a missing translation degrades
+  quietly instead of breaking the page.
+- Switching language re-renders the data-driven sections and re-applies the
+  translation, so the market, calendar and family pages change over too.
+
+```bash
+node server/test/i18n.test.js
+```
+
+That suite guards the dictionary: no empty or duplicate entries, no orphan keys
+that no longer exist in the source, a translation for every listing and member,
+and a content map whose shape still matches `data.js`. Add a string to the site
+without translating it and the suite tells you which one is missing.
 
 ## Quality notes
 

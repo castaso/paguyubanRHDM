@@ -5,6 +5,14 @@
 
   var D = window.ALDER || { categories: [], members: [], listings: [], events: [], news: [], recipes: [], site: {} };
 
+  /* i18n bridge: T() for dynamic strings, tn() for {n} templates. Text that
+     app.js writes into the DOM after boot is re-translated by apply(). */
+  function T(s) { return window.ALDER_LANG ? window.ALDER_LANG.t(s) : s; }
+  function tn(tpl, n) {
+    return window.ALDER_LANG ? window.ALDER_LANG.tn(tpl, n) : tpl.replace(/\{n\}/g, n);
+  }
+  function relayout() { if (window.ALDER_LANG) window.ALDER_LANG.apply(); }
+
   /* ── helpers ───────────────────────────────────────────────────────── */
   function $(s, r) { return (r || document).querySelector(s); }
   function $all(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
@@ -14,7 +22,7 @@
     });
   }
   function money(n, unit) {
-    if (!n) return "Free / borrow";
+    if (!n) return T("Free / borrow");
     return "$" + n + (unit || "");
   }
   function catLabel(id) {
@@ -151,19 +159,20 @@
           '<p class="meta" style="margin-bottom:16px;">Last attempted: just now</p>' +
           '<button class="btn btn-secondary" type="button" id="market-retry">Try again</button>' +
         '</div>';
-      countEl.textContent = "Listings unavailable";
+      countEl.textContent = T("Listings unavailable");
       var retry = $("#market-retry");
       if (retry) retry.addEventListener("click", function () { state.forceError = false; apply(); });
+      relayout();
     }
 
     function renderEmpty(list) {
-      var echo = state.q ? 'No listings match "' + esc(state.q) + '"' : "Nothing in this category yet";
+      var echo = state.q ? T("No listings match") + ' "' + esc(state.q) + '"' : T("Nothing in this category yet");
       resultsEl.className = "";
       resultsEl.innerHTML =
         '<div class="state" role="group" aria-labelledby="market-empty-h" style="grid-column:1/-1;">' +
           '<h3 id="market-empty-h">' + echo + "</h3>" +
-          '<p>Try a broader word, a different category, or clear the filters to see all ' + D.listings.length + " listings.</p>" +
-          '<button class="btn btn-secondary" type="button" id="market-clear">Clear filters</button>' +
+          "<p>" + tn("Try a broader word, a different category, or clear the filters to see all {n} listings.", D.listings.length) + "</p>" +
+          '<button class="btn btn-secondary" type="button" id="market-clear">' + T("Clear filters") + "</button>" +
         "</div>";
       var clear = $("#market-clear");
       if (clear) clear.addEventListener("click", function () {
@@ -171,18 +180,20 @@
         if (searchEl) searchEl.value = ""; if (sortEl) sortEl.value = "newest";
         renderChips(); apply();
       });
-      countEl.textContent = "No listings found";
+      countEl.textContent = T("No listings found");
+      relayout();
     }
 
     function renderResults(list) {
       resultsEl.className = "listing-grid";
       resultsEl.innerHTML = list.map(listingCard).join("");
-      countEl.textContent = list.length + (list.length === 1 ? " listing" : " listings");
+      countEl.textContent = list.length + " " + T(list.length === 1 ? "listing" : "listings");
       if (statusEl) {
-        statusEl.textContent = list.length + " listings shown" +
-          (state.cat !== "all" ? ", category " + catLabel(state.cat) : "") +
-          (state.q ? ', search "' + state.q + '"' : "") + ".";
+        statusEl.textContent = tn("{n} listings shown", list.length) +
+          (state.cat !== "all" ? ", " + catLabel(state.cat) : "") +
+          (state.q ? ', "' + state.q + '"' : "") + ".";
       }
+      relayout();
     }
 
     function apply() {
@@ -191,8 +202,8 @@
       var list = filtered();
       resultsEl.className = "listing-grid";
       resultsEl.innerHTML = Array(3).fill(skeletonCard()).join("");
-      if (countEl) countEl.textContent = "Loading listings…";
-      if (statusEl) statusEl.textContent = "Loading listings.";
+      if (countEl) countEl.textContent = T("Loading listings…");
+      if (statusEl) statusEl.textContent = T("Loading listings…");
       window.setTimeout(function () {
         if (list.length === 0) renderEmpty(list);
         else renderResults(list);
@@ -202,15 +213,21 @@
     renderChips();
     if (searchEl) {
       searchEl.value = state.q;
-      var t;
-      searchEl.addEventListener("input", function () {
-        window.clearTimeout(t);
-        t = window.setTimeout(function () { state.q = searchEl.value; apply(); }, 220);
-      });
+      if (!searchEl.dataset.bound) {
+        searchEl.dataset.bound = "1";
+        var t;
+        searchEl.addEventListener("input", function () {
+          window.clearTimeout(t);
+          t = window.setTimeout(function () { state.q = searchEl.value; apply(); }, 220);
+        });
+      }
     }
     if (sortEl) {
       sortEl.value = state.sort;
-      sortEl.addEventListener("change", function () { state.sort = sortEl.value; apply(); });
+      if (!sortEl.dataset.bound) {
+        sortEl.dataset.bound = "1";
+        sortEl.addEventListener("change", function () { state.sort = sortEl.value; apply(); });
+      }
     }
     apply();
   }
@@ -248,7 +265,7 @@
           "<h1>" + esc(l.title) + "</h1>" +
           '<p class="lead" style="margin-top:14px;">' + esc(l.blurb) + "</p>" +
           '<div class="prose" style="margin-top:28px;">' +
-            "<h2 class=\"h3\">Details</h2>" +
+            "<h2 class=\"h3\">" + T("Details") + "</h2>" +
             '<ul class="list-plain" style="margin-top:10px;">' + l.details.map(function (d) { return "<li>" + esc(d) + "</li>"; }).join("") + "</ul>" +
           "</div>" +
           '<div class="row" style="margin-top:20px;gap:8px;">' + (l.tags || []).map(function (t) { return '<span class="tag">' + esc(t) + "</span>"; }).join("") + "</div>" +
@@ -256,13 +273,13 @@
         "<aside class=\"price-box\">" +
           '<div class="card">' +
             '<div class="listing-price" style="font-size:28px;">' + esc(money(l.price, l.priceUnit)) + "</div>" +
-            '<p class="muted" style="margin:6px 0 20px;">Listed ' + esc(fmtDate(l.posted)) + "</p>" +
+            '<p class="muted" style="margin:6px 0 20px;">' + T("Listed") + " " + esc(fmtDate(l.posted)) + "</p>" +
             '<div class="row" style="gap:12px;margin-bottom:20px;">' +
               '<span class="avatar" aria-hidden="true">' + esc(initials(l.seller)) + "</span>" +
               "<div><div style=\"font-weight:600;\">" + esc(l.seller) + '</div><div class="meta">' + esc(l.place) + "</div></div>" +
             "</div>" +
-            '<button class="btn btn-primary btn-block" type="button" id="contact-seller">Message ' + esc(shortName(l.seller)) + "</button>" +
-            '<button class="btn btn-secondary btn-block" type="button" id="save-listing" aria-pressed="false" style="margin-top:10px;">Save this listing</button>' +
+            '<button class="btn btn-primary btn-block" type="button" id="contact-seller">' + T("Message") + " " + esc(shortName(l.seller)) + "</button>" +
+            '<button class="btn btn-secondary btn-block" type="button" id="save-listing" aria-pressed="false" style="margin-top:10px;">' + T("Save this listing") + "</button>" +
             '<p class="meta" id="contact-note" role="status" style="margin:14px 0 0;"></p>' +
           "</div>" +
           '<dl class="card spec-list" style="margin-top:20px;">' +
@@ -277,14 +294,15 @@
     var note = $("#contact-note");
     var cbtn = $("#contact-seller");
     if (cbtn) cbtn.addEventListener("click", function () {
-      note.innerHTML = "Message " + esc(l.seller) + " at <a href=\"mailto:" + esc(D.site.contact) + "\" style=\"text-decoration:underline;\">" + esc(D.site.contact) + "</a>. Payment and pickup happen offline, between the two of you.";
+      note.innerHTML = T("Message") + " " + esc(l.seller) + " at <a href=\"mailto:" + esc(D.site.contact) + "\" style=\"text-decoration:underline;\">" + esc(D.site.contact) + "</a>. " + T("Payment and pickup happen offline, between the two of you.");
+      relayout();
     });
     var sbtn = $("#save-listing");
     if (sbtn) sbtn.addEventListener("click", function () {
       var on = sbtn.getAttribute("aria-pressed") === "true";
       sbtn.setAttribute("aria-pressed", String(!on));
-      sbtn.textContent = !on ? "Saved ✓" : "Save this listing";
-      note.textContent = !on ? "Saved to your shortlist." : "Removed from your shortlist.";
+      sbtn.textContent = !on ? T("Saved ✓") : T("Save this listing");
+      note.textContent = !on ? T("Saved to your shortlist.") : T("Removed from your shortlist.");
     });
 
     var related = $("#listing-related");
@@ -313,8 +331,8 @@
       ev.innerHTML = upcoming(3).map(function (e) {
         var d = daysUntil(e.date);
         return '<div class="feed-item">' +
-          '<div style="min-width:74px;"><div class="num" style="font-weight:600;">' + esc(fmtDate(e.date).replace(/,.*/, "")) + '</div><div class="meta">' + (d > 0 ? "in " + d + " days" : "today") + "</div></div>" +
-          '<div><h3>' + esc(e.title) + '</h3><p>' + esc(e.place) + '</p><p class="meta" style="margin-top:6px;">' + esc(e.going) + " going</p></div>" +
+          '<div style="min-width:74px;"><div class="num" style="font-weight:600;">' + esc(fmtDate(e.date).replace(/,.*/, "")) + '</div><div class="meta">' + (d > 0 ? tn("in {n} days", d) : T("today")) + "</div></div>" +
+          '<div><h3>' + esc(e.title) + '</h3><p>' + esc(e.place) + '</p><p class="meta" style="margin-top:6px;">' + tn("{n} going", e.going) + "</p></div>" +
         "</div>";
       }).join("");
     }
@@ -371,7 +389,7 @@
       albums.innerHTML = A.map(function (a) {
         return '<figure class="album" style="margin:0;">' +
           '<div class="album-cover" style="--card-tint: var(' + esc(a.tint) + ')" role="img" aria-label="Album cover placeholder for ' + esc(a.title) + '">Photo · replace with your own</div>' +
-          "<figcaption><h3>" + esc(a.title) + '</h3><p class="meta">' + a.count + " photos</p>" +
+          "<figcaption><h3>" + esc(a.title) + '</h3><p class="meta">' + tn("{n} photos", a.count) + "</p>" +
           '<p class="muted" style="font-size:14px;margin:6px 0 0;">' + esc(a.note) + "</p></figcaption>" +
         "</figure>";
       }).join("");
@@ -421,7 +439,7 @@
           return '<article class="log-row">' +
             '<span class="meta">' + esc(fmtDate(e.date)) + "</span>" +
             "<div><h3>" + esc(e.title) + '</h3><p class="muted" style="font-size:14px;margin:4px 0 0;">' + esc(e.note) + "</p></div>" +
-            '<span class="pull meta">' + esc(e.place.split(",")[0]) + " · " + (d > 0 ? "in " + d + "d" : "today") + "<br>" + esc(e.going) + " going</span>" +
+            '<span class="pull meta">' + esc(e.place.split(",")[0]) + " · " + (d > 0 ? tn("in {n} days", d) : T("today")) + "<br>" + tn("{n} going", e.going) + "</span>" +
           "</article>";
         }).join("") +
       "</section>";
@@ -432,6 +450,8 @@
   function initSell() {
     var form = $("#sell-form");
     if (!form) return;
+    if (form.dataset.bound) return;
+    form.dataset.bound = "1";
     var summary = $("#form-summary");
     var success = $("#sell-success");
 
@@ -487,9 +507,9 @@
       });
 
       if (errors.length) {
-        summary.innerHTML = '<h2 tabindex="-1" id="form-summary-h">' + errors.length + (errors.length === 1 ? " problem" : " problems") + " to fix</h2>" +
+        summary.innerHTML = '<h2 tabindex="-1" id="form-summary-h">' + tn("{n} problems to fix", errors.length) + "</h2>" +
           "<ul>" + errors.map(function (er) {
-            return '<li><a href="#' + er.field.id + '">' + esc(er.field.label + ": " + er.msg) + "</a></li>";
+            return '<li><a href="#' + er.field.id + '">' + esc(T(er.field.label) + ": " + T(er.msg)) + "</a></li>";
           }).join("") + "</ul>";
         summary.hidden = false;
         var h = document.getElementById("form-summary-h");
@@ -499,20 +519,21 @@
 
       summary.hidden = true;
       var btn = $("#sell-submit");
-      if (btn) { btn.disabled = true; btn.textContent = "Posting…"; }
+      if (btn) { btn.disabled = true; btn.textContent = T("Posting…"); }
       var status = $("#sell-status");
-      if (status) status.textContent = "Posting your listing.";
+      if (status) status.textContent = T("Posting your listing.");
 
       window.setTimeout(function () {
         form.hidden = true;
         if (summary) summary.hidden = true;
         var data = new FormData(form);
         var s = $("#sell-success-title");
-        if (s) s.textContent = data.get("title") || "Your listing";
+        if (s) s.textContent = data.get("title") || T("Your listing");
         if (success) success.hidden = false;
         var back = $("#sell-back");
         if (back) back.focus();
-        if (status) status.textContent = "Your listing was posted.";
+        if (status) status.textContent = T("Your listing was posted.");
+        relayout();
       }, 700);
     });
 
@@ -524,13 +545,14 @@
       $all(".field", form).forEach(function (w) { w.classList.remove("is-invalid"); });
       $all("[name]", form).forEach(function (i) { i.dataset.touched = "0"; i.removeAttribute("aria-invalid"); });
       $("#sell-submit").disabled = false;
-      $("#sell-submit").textContent = "Post listing";
+      $("#sell-submit").textContent = T("Post listing");
       var f = form.querySelector('[name="title"]'); if (f) f.focus();
     });
   }
 
   /* ── boot ──────────────────────────────────────────────────────────── */
   function boot() {
+    if (window.ALDER_LANG) D = window.ALDER_LANG.data() || D;
     setChrome();
     initHome();
     initMarket();
@@ -538,7 +560,13 @@
     initFamily();
     initEvents();
     initSell();
+    relayout();
   }
+
+  /* Re-render everything when the visitor switches language. */
+  window.ALDER_RENDER = boot;
+  document.addEventListener("alder:langchange", function () { boot(); });
+
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
   else boot();
 })();

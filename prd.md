@@ -252,6 +252,11 @@ Categories: `handmade · secondhand · services · produce · rentals · digital
   contrast in both. No section flips theme mid-page. Enforced by
   `server/test/design.test.js`.
 
+- **NFR9** Languages - English and Bahasa Indonesia, switched from the header,
+  persisted, and reflected in `<html lang>`. Interface and content are both
+  translated; a missing translation degrades to English rather than breaking a
+  page. Enforced by `server/test/i18n.test.js`.
+
 ## 11. Success signals (v1, qualitative)
 
 - A relative can list an item in under two minutes without instructions.
@@ -288,6 +293,7 @@ This is a deliberate, labelled split — not an oversight.
 Static site served from the managed nginx static host.
 Entry point: `index.html`. Pages: `index`, `marketplace`, `listing`, `sell`,
 `family`, `events`, `about`. Shared: `assets/styles.css`, `assets/app.js`,
-`assets/data.js`, `assets/theme.js`, `assets/auth.js`,
-`assets/supabase-auth.js`. Tests: `server/test/api.test.js`,
-`server/test/design.test.js`.
+`assets/data.js`, `assets/theme.js`, `assets/lang.js`, `assets/i18n.js`,
+`assets/i18n-content.js`, `assets/auth.js`, `assets/supabase-auth.js`. Tests:
+`server/test/api.test.js`, `server/test/design.test.js`,
+`server/test/i18n.test.js`.
