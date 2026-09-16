@@ -1,4 +1,4 @@
-/* Alder House, content model (mock data).
+/* Paguyuban RHDM, content model (mock data).
    Swap these arrays for a real source later; every page reads from here. */
 (function () {
   "use strict";
@@ -130,7 +130,7 @@
     },
     {
       id: "recipe-ebook",
-      title: "The Alder Family Recipe Book (PDF)",
+      title: "The RHDM Recipe Book (PDF)",
       category: "digital",
       price: 8, priceUnit: "",
       condition: "New",
@@ -256,10 +256,10 @@
   ];
 
   var SITE = {
-    brand: "Alder House",
-    tagline: "Family news, recipes, and a market run by relatives",
+    brand: "Paguyuban RHDM",
+    tagline: "Community news, recipes, and a market run by members",
     organizer: "Marcus Alder",
-    contact: "market@alderhouse.example",
+    contact: "market@paguyubanrhdm.example",
     founded: 2019
   };
 

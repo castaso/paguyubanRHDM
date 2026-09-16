@@ -1,7 +1,7 @@
 "use strict";
 
 /**
- * Alder House backend — configuration.
+ * Paguyuban RHDM backend — configuration.
  * Every value comes from the environment; see .env.example.
  */
 const path = require("path");

@@ -2,7 +2,7 @@
   "name": "alder-house-backend",
   "version": "1.0.0",
   "private": true,
-  "description": "Google OAuth 2.0 (PKCE) sign-in with server-enforced RBAC, serving the Alder House static site.",
+  "description": "Google OAuth 2.0 (PKCE) sign-in with server-enforced RBAC, serving the Paguyuban RHDM static site.",
   "main": "server.js",
   "engines": {
     "node": ">=20"

@@ -1,4 +1,4 @@
-/* Alder House, zero-dependency Supabase Auth client.
+/* Paguyuban RHDM, zero-dependency Supabase Auth client.
  *
  * Talks to the Supabase Auth REST API directly (no supabase-js, no CDN, the
  * host's CSP blocks external scripts). Uses the implicit OAuth flow, which is

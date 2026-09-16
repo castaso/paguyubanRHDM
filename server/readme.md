@@ -1,4 +1,4 @@
-# Alder House backend
+# Paguyuban RHDM backend
 
 Google sign-in with **server-enforced** access control, plus the static site.
 

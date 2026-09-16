@@ -1,4 +1,4 @@
--- Alder House — Supabase schema.
+-- Paguyuban RHDM — Supabase schema.
 -- Run this in the Supabase SQL editor (Dashboard → SQL → New query).
 --
 -- This file is where access control is ACTUALLY enforced. The client-side

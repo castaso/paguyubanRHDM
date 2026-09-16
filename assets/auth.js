@@ -1,4 +1,4 @@
-/* Alder House, settings panel + RBAC sign-in.
+/* Paguyuban RHDM, settings panel + RBAC sign-in.
  *
  * The site itself is PUBLIC. Sign-in is only offered from the invisible
  * settings cog in the top-right of the header: clicking it opens the panel,

@@ -1,4 +1,4 @@
-/* Alder House, shared front-end logic.
+/* Paguyuban RHDM, shared front-end logic.
    Single source of truth is window.ALDER (data.js). No external requests. */
 (function () {
   "use strict";

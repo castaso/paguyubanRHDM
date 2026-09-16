@@ -1,4 +1,4 @@
-# Alder House — build notes
+# Paguyuban RHDM — build notes
 
 A static family website with a marketplace. No build step, no dependencies, no
 external assets. Open `index.html` and it runs.

@@ -1,7 +1,7 @@
 "use strict";
 
 /**
- * Alder House backend.
+ * Paguyuban RHDM backend.
  *
  *   - Google OAuth 2.0 (Authorization Code + PKCE) sign-in
  *   - Server-enforced RBAC allow-list (never trusts the browser)
@@ -141,15 +141,15 @@ function loginPage(denied) {
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Sign in · Alder House</title>
-<meta name="description" content="Sign in to Alder House with an approved Google account." />
+<title>Sign in · Paguyuban RHDM</title>
+<meta name="description" content="Sign in to Paguyuban RHDM with an approved Google account." />
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
 <link rel="stylesheet" href="/assets/styles.css" />
 </head>
 <body>
 <div class="auth-gate">
   <div class="auth-card">
-    <div class="auth-brand">${HOUSE_MARK} Alder House</div>
+    <div class="auth-brand">${HOUSE_MARK} Paguyuban RHDM</div>
     <h1>Sign in to come in</h1>
     <p class="auth-sub">This house is for the family. Access is limited to approved Google accounts.</p>
     ${denied ? `<p class="auth-error" role="alert">${esc(denied)}</p>` : ""}
@@ -169,10 +169,10 @@ function errorPage(title, detail) {
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>${esc(title)} · Alder House</title>
+<title>${esc(title)} · Paguyuban RHDM</title>
 <link rel="stylesheet" href="/assets/styles.css" /></head>
 <body><div class="auth-gate"><div class="auth-card">
-<div class="auth-brand">${HOUSE_MARK} Alder House</div>
+<div class="auth-brand">${HOUSE_MARK} Paguyuban RHDM</div>
 <h1>${esc(title)}</h1>
 <p class="auth-sub">${esc(detail)}</p>
 <a class="btn btn-secondary btn-block" href="/" style="text-decoration:none;">Back to the house</a>
@@ -377,7 +377,7 @@ if (require.main === module) {
     if (!config.google.clientSecret) missing.push("GOOGLE_CLIENT_SECRET");
     if (!config.session.secret) missing.push("SESSION_SECRET");
 
-    console.log(`Alder House backend listening on http://localhost:${config.port}`);
+    console.log(`Paguyuban RHDM backend listening on http://localhost:${config.port}`);
     console.log(`  site root     : ${config.siteRoot}`);
     console.log(`  allowed (RBAC): ${rbac.list.join(", ")}`);
     console.log(`  redirect uri  : ${config.google.redirectUri}`);

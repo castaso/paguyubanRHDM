@@ -1,13 +1,13 @@
-# PRD — Alder House
+# PRD — Paguyuban RHDM
 
 **A family website with marketplace capabilities**
-Version 1.0 · 2026-09-16 · Owner: Alder House (family admin)
+Version 1.0 · 2026-09-16 · Owner: Paguyuban RHDM (family admin)
 
 ---
 
 ## 1. Summary
 
-**Alder House** is a private-leaning family website that does two jobs at once:
+**Paguyuban RHDM** is a private-leaning family website that does two jobs at once:
 
 1. **Family hub** — news, photo albums, a member directory, an events calendar,
    and a shared recipe box. The place relatives actually check in.
@@ -36,7 +36,7 @@ Existing options don't fit:
 - **Public marketplaces** (eBay, Facebook Marketplace) are wrong-audience, fee-laden, and public.
 - **A full e-commerce platform** is overkill for a family that trades ten things a month.
 
-Alder House is the middle path: a familiar, warm family site where the market
+Paguyuban RHDM is the middle path: a familiar, warm family site where the market
 is just another room in the house.
 
 ---

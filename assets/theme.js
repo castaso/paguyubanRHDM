@@ -1,4 +1,4 @@
-/* Alder House, dark / light theme.
+/* Paguyuban RHDM, dark / light theme.
  *
  * Loaded in <head> so the attribute is set before first paint: no flash of the
  * wrong theme. Defaults to the system preference and only pins a choice once
