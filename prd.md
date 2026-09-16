@@ -162,15 +162,17 @@ page. Every page reachable in one tap from anywhere.
 - **FR7.3** Contact path for the organiser.
 
 ### M8 — Access control (RBAC) + sign-in
-- **FR8.1** Every page is gated behind a sign-in step; unauthenticated visitors
-  see only the sign-in card.
+- **FR8.1** The site itself is **public** — no page is hidden. Sign-in is offered
+  only from the settings cog, and it guards the settings area, not the content.
 - **FR8.2** Sign-in is presented as **Sign in with Google**. The allow-list is
   exactly: `paguyubanRHDM@gmail.com`, `castasoft@gmail.com`.
 - **FR8.3** Any other account is refused with a message that names the RBAC rule.
 - **FR8.4** A **settings control sits at the top-right of the header and is
-  invisible until hovered, focused, or opened.** It opens a panel showing the
-  signed-in account, the allow-list, how access is enforced, and Sign out.
-- **FR8.5** Session persists across pages and reloads; Sign out returns to the gate.
+  invisible until hovered, focused, or opened.** The panel shows the sign-in step
+  when signed out, and the account, allow-list, enforcement note, and Sign out
+  when signed in.
+- **FR8.5** Session persists across pages and reloads; Sign out returns the panel
+  to the sign-in step.
 - **FR8.6** A **server-side backend** (see `server/`) implements the real flow:
   Google OAuth 2.0 Authorization Code + PKCE, ID-token verification against
   Google's JWKS, server-enforced RBAC on every request, a signed HttpOnly

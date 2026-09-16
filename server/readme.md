@@ -16,8 +16,9 @@ Zero dependencies — Node's built-ins only (`node:crypto`, `node:http`, global
 4. Issues a **signed, HttpOnly session cookie** and re-checks the allow-list on
    every subsequent request, so removing an address revokes that session
    immediately.
-5. Serves the static site and refuses to render any page to a visitor without a
-   valid session — the browser never decides who gets in.
+5. Serves the site **publicly**. Pages are open; the guarded surface is the
+   settings area — `/auth/*` and `/api/settings`. The browser never decides who
+   gets in.
 
 ## Setup
 
@@ -55,8 +56,9 @@ node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
 | GET | `/auth/me` | public | `{authenticated, email}` — 401 when anonymous |
 | GET | `/auth/signout` | public | Clear the session; 302 to `/` |
 | GET | `/healthz` | public | Liveness + config summary |
-| GET | `/assets/*` | public | Styles/scripts the sign-in screen needs |
-| GET | everything else | **session required** | The site. Anonymous → sign-in screen |
+| GET | `/assets/*` | public | Styles/scripts |
+| GET | `/api/settings` | **session required** | JSON: the signed-in account + the allow-list; 401 when anonymous |
+| GET | everything else | public | The site — pages are open; only the settings area is protected |
 
 `/server/*` and `/.git/*` are never served.
 

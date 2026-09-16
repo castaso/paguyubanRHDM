@@ -113,19 +113,29 @@ loading state on every filter change, the empty state when a search matches
 nothing (e.g. `marketplace.html?q=zzzz`), and the error state at
 `marketplace.html?state=error` — which includes a working "Try again" button.
 
-## Access control (RBAC) — read this first
+## Access control (RBAC)
 
-There is a sign-in gate: only two accounts may enter.
+**The site is public.** No page is hidden behind a login.
+
+Sign-in is offered from exactly one place: the **settings cog in the top-right
+of the header**. It is invisible until you hover it, tab to it, or open it.
+
+Click it and the settings panel opens:
+
+- **Signed out** → it asks for an approved Google account.
+- **Signed in** → it shows the account, the allow-list, how access is enforced,
+  and **Sign out**.
+
+Only these accounts are accepted:
 
 ```js
 // assets/auth.js
 allowedEmails: ["paguyubanRHDM@gmail.com", "castasoft@gmail.com"]
 ```
 
-A gear icon sits in the **top-right of the header**; it is invisible until you
-hover it, tab to it, or open it — then it reveals the settings panel with the
-signed-in account, the allow-list, and **Sign out**. Once signed out, the gate
-returns.
+On the static preview this check runs in the browser and guards the settings
+panel — see the warning below. The version that actually enforces it is the
+backend in `server/`.
 
 ### ⚠️ This gate is not real security
 
@@ -150,7 +160,8 @@ against the allow-list. Approved → in. Anything else → refused.
 This repository now contains that backend. It implements Google OAuth 2.0
 (Authorization Code **+ PKCE**), verifies the ID token against Google's JWKS,
 enforces the allow-list server-side on every request, and issues a signed
-HttpOnly session cookie. It also serves and gates the site.
+HttpOnly session cookie. It serves the site publicly and protects the settings
+endpoints (`/auth/*`, `/api/settings`).
 
 Setup and deployment: `server/README.md`.
 

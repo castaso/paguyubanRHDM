@@ -6,7 +6,8 @@
  *   - Google OAuth 2.0 (Authorization Code + PKCE) sign-in
  *   - Server-enforced RBAC allow-list (never trusts the browser)
  *   - Signed HttpOnly session cookie
- *   - Serves the static site, gating every page behind a session
+ *   - Serves the PUBLIC static site; the settings area is what's protected
+ *     (`/auth/*` and `/api/settings`), not the pages.
  *
  * Run:  node server/server.js     (see server/.env.example)
  */
@@ -247,11 +248,6 @@ function serveStatic(req, res, url) {
     return notFound(res);
   }
 
-  if (!currentUser(req)) {
-    // Never leak page content to an unauthenticated visitor.
-    return sendHtml(res, 200, loginPage());
-  }
-
   const file = staticSite.resolve(config.siteRoot, pathname === "/" ? "/index.html" : pathname);
   if (file && staticSite.send(req, res, file, securityHeaders())) return;
 
@@ -285,6 +281,19 @@ async function handle(req, res) {
       authenticated: true,
       email: s.email,
       provider: s.provider,
+      expiresAt: s.exp ? new Date(s.exp).toISOString() : null,
+    });
+  }
+
+  if (pathname === "/api/settings") {
+    const s = currentUser(req);
+    if (!s) {
+      return sendJson(res, 401, { error: "unauthorized", signInUrl: "/auth/google" });
+    }
+    return sendJson(res, 200, {
+      signedInAs: s.email,
+      provider: s.provider,
+      allowedEmails: rbac.list,
       expiresAt: s.exp ? new Date(s.exp).toISOString() : null,
     });
   }

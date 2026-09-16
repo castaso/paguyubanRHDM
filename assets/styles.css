@@ -371,10 +371,10 @@ h4, .h4 { font-size: var(--fs-h4); font-weight: 600; line-height: 1.35; margin: 
 .list-plain li:first-child { border-top: 0; }
 .stat-num { font-family: var(--font-display); font-weight: 600; font-size: clamp(40px, 6vw, 64px); line-height: 1; letter-spacing: -0.03em; }
 
-/* ─── access gate (RBAC prototype) ───────────────────────────────────── */
-html[data-auth="locked"] body { visibility: hidden; }
-html[data-auth="locked"] .auth-gate { visibility: visible; }
-
+/* ─── access panel (RBAC) ────────────────────────────────────────────── */
+/* `.auth-gate` / `.auth-card` style the server-rendered sign-in page
+   (server/server.js). The in-page sign-in lives in the settings panel, which
+   reuses `.auth-note` / `.auth-error` / `.auth-badge` / `.auth-google`. */
 .auth-gate {
   position: fixed; inset: 0; z-index: 200; visibility: visible;
   display: grid; place-items: center; padding: 24px; overflow: auto;
