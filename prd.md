@@ -1,0 +1,246 @@
+# PRD — Alder House
+
+**A family website with marketplace capabilities**
+Version 1.0 · 2026-09-16 · Owner: Alder House (family admin)
+
+---
+
+## 1. Summary
+
+**Alder House** is a private-leaning family website that does two jobs at once:
+
+1. **Family hub** — news, photo albums, a member directory, an events calendar,
+   and a shared recipe box. The place relatives actually check in.
+2. **Family marketplace** — a lightweight storefront where relatives list and
+   find things: handmade goods, second-hand items, services, home-grown
+   produce, borrowable gear, and digital files.
+
+The marketplace is a *capability of the family site*, not a separate store. A
+cousin selling hand-knit socks and a grandmother posting egg availability live
+in the same place the family reads news and remembers birthdays.
+
+**One-line pitch:** "Everything the Alders make, swap, and celebrate — in one
+place."
+
+---
+
+## 2. Problem & context
+
+Extended families coordinate across a scatter of chat threads, photo dumps, and
+spreadsheets. Practical, low-stakes exchange between relatives — who has a
+trailer to lend, who is selling a table, who has surplus tomatoes, who teaches
+guitar — happens ad hoc and gets lost.
+
+Existing options don't fit:
+- **Group chats** are chronological and forgettable; nothing is findable a week later.
+- **Public marketplaces** (eBay, Facebook Marketplace) are wrong-audience, fee-laden, and public.
+- **A full e-commerce platform** is overkill for a family that trades ten things a month.
+
+Alder House is the middle path: a familiar, warm family site where the market
+is just another room in the house.
+
+---
+
+## 3. Goals & non-goals
+
+### Goals
+- G1 — Give the family a single, always-current home for news, photos, and dates.
+- G2 — Make listing an item or service take under two minutes.
+- G3 — Make finding something (browse, filter, search) instant and obvious.
+- G4 — Feel personal and warm, not corporate or template-generic.
+- G5 — Be fast, accessible, and readable on a phone at the kitchen table.
+
+### Non-goals (v1)
+- Real payments, checkout, or shipping. Money changes hands offline; the site
+  connects people, it does not process transactions.
+- Public sign-up, bidding, ratings, or dispute handling.
+- Native mobile apps.
+- Server-side accounts, private data, or per-user permissions.
+
+---
+
+## 4. Users & personas
+
+| Persona | Who | Primary need | Key surface |
+|---|---|---|---|
+| **The Organiser** (site admin) | Usually a middle-generation relative | Keep everything current, post news, wrangle events | Home, Family, Events |
+| **The Seller** | Any relative with something to sell, lend, or make | List quickly and be found | Sell form, my listings |
+| **The Browser** | A relative looking for a thing | Find it fast without wading through noise | Market, Listing detail |
+| **The Lurker** | Less-active relative | Catch up on news + photos in one scroll | Home, Family |
+
+**Primary audience:** extended relatives (multiple households, several
+generations). **Secondary:** invited friends of the family.
+
+---
+
+## 5. Scope — modules
+
+| # | Module | Required in v1 | Notes |
+|---|---|---|---|
+| M1 | Home hub | Yes | News feed, upcoming events, featured listings, quick counts |
+| M2 | Marketplace browse | Yes | Grid, category filter, search, sort |
+| M3 | Listing detail | Yes | Photos area, price, seller, description, contact/reserve |
+| M4 | Post a listing | Yes | Validated form, category, price, condition/availability |
+| M5 | Family | Yes | Photo albums, member directory, recipe box |
+| M6 | Events | Yes | List + month grouping, RSVP counts |
+| M7 | About | Yes | How the market works, house rules, contact |
+| M8 | Message board | Deferred | v2 |
+| M9 | Family tree | Deferred | v2 (interactive) |
+
+---
+
+## 6. Information architecture
+
+```
+Home (hub)
+├── Market ──▶ Listing detail
+│   └── Sell something (listing form)
+├── Family  (news · albums · directory · recipes)
+├── Calendar (events)
+└── About   (how it works · house rules)
+```
+
+**Global chrome:** sticky top nav (Home · Market · Family · Calendar · About +
+a primary "Sell something" action) and a four-column footer present on every
+page. Every page reachable in one tap from anywhere.
+
+---
+
+## 7. Functional requirements
+
+### M1 — Home hub
+- **FR1.1** Hero names the site and the one-line pitch.
+- **FR1.2** "Latest from the family" shows the 3 most recent news items.
+- **FR1.3** "Coming up" shows the next 3 events with date and place.
+- **FR1.4** "Fresh in the market" shows 3 newest listings with price and seller.
+- **FR1.5** Quick counts (listings, members, events) are **honest counts of the
+  live mock data**, never invented marketing numbers.
+
+### M2 — Marketplace browse
+- **FR2.1** Responsive card grid: 1 col (phone) → 2 (tablet) → 3 (desktop).
+- **FR2.2** Category filter chips: All, Handmade, Second-hand, Services,
+  Produce, Rentals, Digital.
+- **FR2.3** Free-text search across title, seller, place, and tags.
+- **FR2.4** Sort: Newest, Price low→high, Price high→low.
+- **FR2.5** Result count updates live and is announced politely.
+- **FR2.6** The filter/search state is shareable via the URL query string.
+
+### M3 — Listing detail
+- **FR3.1** Read `?id=` from the URL; render the matching listing.
+- **FR3.2** Show title, price (or "Free / borrow"), category, condition,
+  location, seller, posted date, full description, tags.
+- **FR3.3** Primary action: "Message <seller>" (offline hand-off in v1).
+  Secondary: "Save".
+- **FR3.4** Unknown or missing `id` renders a proper not-found state with a
+  route back to the market.
+
+### M4 — Post a listing
+- **FR4.1** Fields: title (required, 3–70), category (required), price
+  (required, ≥0 or "free/borrow"), condition, location, description
+  (required, 20–600).
+- **FR4.2** Validate on blur; re-validate on input once invalid; never on first keystroke.
+- **FR4.3** On submit with errors: an error summary appears at the top, focus
+  moves to it, each field is linked to its message via `aria-describedby`.
+- **FR4.4** On success: a confirmation state that preserves what was entered and
+  offers "View in market".
+- **FR4.5** Never clear the form when submission fails.
+
+### M5 — Family
+- **FR5.1** Photo album grid with cover, title, and count.
+- **FR5.2** Member directory: name, branch, place, role.
+- **FR5.3** Recipe box: title, by, time, tags, short note.
+
+### M6 — Events
+- **FR6.1** Events grouped by upcoming month with date, title, place, type.
+- **FR6.2** RSVP counts shown; the CTA is an offline hand-off ("Say you're going").
+- **FR6.3** An empty month renders an honest empty state, not a blank.
+
+### M7 — About
+- **FR7.1** Explain the marketplace model (family-first, no fees, money offline).
+- **FR7.2** House rules: be kind, describe honestly, respond within a week,
+  no outside reselling.
+- **FR7.3** Contact path for the organiser.
+
+---
+
+## 8. States (every data surface)
+
+Per the state-coverage rules, each fetching/transforming surface must render all
+five. In v1 the "fetch" is a local data module with a simulated latency so the
+states are real and demonstrable:
+
+| State | Where it appears |
+|---|---|
+| Loading | Market grid shows skeleton cards while the data module resolves |
+| Empty | Market with a filter/search that matches nothing — echoes the query, offers "Clear filters" |
+| Error | Market and listing detail can surface a retry panel with cause + recovery |
+| Populated | The default case everywhere |
+| Edge | Very long titles/descriptions, missing optional fields, 0-result queries, extreme price ranges |
+
+Form-specific states: untouched, dirty, invalid-after-touched,
+invalid-after-submit, submitting, success.
+
+---
+
+## 9. Content model
+
+```
+Member  { name, branch, role, place, initials }
+Listing { id, title, category, price, priceUnit, condition, seller,
+          place, posted, blurb, details[], tags[], tint }
+Event   { date, title, place, kind, note, going }
+News    { date, title, author, tag, excerpt }
+Recipe  { title, by, minutes, tags[], note }
+```
+
+Categories: `handmade · secondhand · services · produce · rentals · digital`.
+
+---
+
+## 10. Non-functional requirements
+
+- **NFR1 Hosting** — pure static output. No server runtime, no API, no database.
+- **NFR2 No external assets** — strict CSP at the host blocks every cross-origin
+  fetch, so fonts, icons, imagery, and scripts must all be same-origin. Nothing
+  in the shipped site requests another origin.
+- **NFR3 Responsive** — three breakpoints: phone (<768), tablet (768–1023),
+  desktop (≥1024). No fixed-width page shells.
+- **NFR4 Accessibility** — WCAG 2.2 AA target: body contrast ≥4.5:1, one `<h1>`
+  per page, no skipped heading levels, landmarks, visible focus rings, labelled
+  inputs, `role="alert"` on inline errors, 24×24 CSS px minimum targets.
+- **NFR5 Performance** — no render-blocking remote requests; first paint is
+  local-only.
+- **NFR6 Language** — site copy in English; `lang="en"` on every document.
+- **NFR7 Compatibility** — works with JavaScript disabled for reading surfaces
+  (content is in the HTML); the market's interactive filtering degrades to the
+  full list.
+
+---
+
+## 11. Success signals (v1, qualitative)
+
+- A relative can list an item in under two minutes without instructions.
+- A visitor can reach any listing in ≤2 taps from the home page.
+- The site reads as *this family's* site, not a template (verified by the
+  "could a stranger identify it?" test).
+- No accessibility blocker on the primary flows.
+
+---
+
+## 12. Out of scope / next
+
+**Deferred to v2:** message board, interactive family tree, real accounts,
+saved-search alerts, image upload (v1 uses tinted placeholder media),
+notification emails.
+
+**Known constraint:** money and messaging happen offline. The site's job is
+discovery and connection.
+
+---
+
+## 13. Delivery
+
+Static site served from the managed nginx static host.
+Entry point: `index.html`. Pages: `index`, `marketplace`, `listing`, `sell`,
+`family`, `events`, `about`. Shared: `assets/styles.css`, `assets/app.js`,
+`assets/data.js`.

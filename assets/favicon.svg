@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Alder House">
+  <rect width="32" height="32" rx="7" fill="#fafaf7"/>
+  <g fill="none" stroke="#c96442" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6 15 16 6l10 9"/>
+    <path d="M9 14v11h14V14"/>
+    <path d="M13.5 25v-6h5v6"/>
+  </g>
+</svg>
