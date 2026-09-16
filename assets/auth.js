@@ -247,6 +247,7 @@
           "</button>" +
         "</div>" +
         '<section id="settings-account"></section>' +
+        '<section id="settings-admin"></section>' +
         RBAC_SECTION +
         '<section>' +
           '<p class="eyebrow" style="margin-bottom:10px;">How this is enforced</p>' +
@@ -264,6 +265,16 @@
       document.getElementById("settings-allow").innerHTML = CFG.allowedEmails.map(function (e) {
         return "<li><span>" + esc(e) + '</span><span class="badge badge-ok"><span class="dot"></span>allowed</span></li>';
       }).join("");
+
+      var admin = document.getElementById("settings-admin");
+      if (admin) {
+        admin.innerHTML = s
+          ? '<p class="eyebrow" style="margin-bottom:10px;">Admin</p>' +
+            '<p class="muted" style="font-size:13.5px;margin:0 0 14px;">You can set up and post goods and services.</p>' +
+            '<a class="btn btn-secondary btn-sm" href="sell.html" style="text-decoration:none;">Post a listing</a>'
+          : "";
+      }
+      applyAdminGate();
 
       var out = document.getElementById("settings-signout");
       if (out) {
@@ -351,6 +362,29 @@
     window.ALDER_SETTINGS = { refresh: render, open: open, close: close };
   }
 
+  /**
+   * Selling is admin-only. Any element marked [data-requires-admin] stays hidden
+   * until an admin is signed in, and its sibling #admin-restricted takes over
+   * with a sign-in prompt.
+   */
+  function applyAdminGate() {
+    var area = document.querySelector("[data-requires-admin]");
+    if (!area) return;
+    var restricted = document.getElementById("admin-restricted");
+    var signedIn = !!currentSession();
+    area.hidden = !signedIn;
+    if (restricted) restricted.hidden = signedIn;
+    if (!signedIn && restricted && restricted.getAttribute("data-wired") !== "1") {
+      var b = document.getElementById("admin-signin");
+      if (b) {
+        b.addEventListener("click", function () {
+          if (window.ALDER_SETTINGS) window.ALDER_SETTINGS.open();
+        });
+      }
+      restricted.setAttribute("data-wired", "1");
+    }
+  }
+
   /* ── session resolution ───────────────────────────────────────────── */
   function refreshServerSession() {
     return fetch(CFG.apiBase + "/auth/me", { credentials: "include", headers: { accept: "application/json" } })
@@ -380,16 +414,24 @@
     buildSettings();
 
     if (MODE === "supabase") {
+      applyAdminGate();
       if (!client || !client.isConfigured()) return;
       var captured = client.captureFromUrl();
       if (captured && captured.error) authError = "Sign-in was not completed: " + captured.error;
       refreshSupabaseSession().then(function () {
         if (window.ALDER_SETTINGS) window.ALDER_SETTINGS.refresh();
+        applyAdminGate();
       });
       return;
     }
 
-    if (MODE === "server") refreshServerSession();
+    if (MODE === "server") {
+      applyAdminGate();
+      refreshServerSession().then(applyAdminGate);
+      return;
+    }
+
+    applyAdminGate();
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);

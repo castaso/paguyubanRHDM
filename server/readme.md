@@ -59,6 +59,7 @@ node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
 | GET | `/healthz` | public | Liveness + config summary |
 | GET | `/assets/*` | public | Styles/scripts |
 | GET | `/api/settings` | **session required** | JSON: the signed-in account + the allow-list; 401 when anonymous |
+| GET | `/sell.html` | **admin session required** | Setting up and posting goods/services; 403 otherwise |
 | GET | everything else | public | The site — pages are open; only the settings area is protected |
 
 `/server/*` and `/.git/*` are never served.

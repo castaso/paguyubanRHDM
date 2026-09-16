@@ -74,6 +74,7 @@ in `server/README.md`.
 | Form fields or their rules | `sell.html` (markup) + `FIELDS` in `assets/app.js` |
 | Who may sign in (client list) | `assets/auth.js` → `allowedEmails` |
 | Who may sign in (enforced) | Supabase: the `allowed_emails` table · self-hosted: `ALLOWED_EMAILS` |
+| Who may post or manage listings | the admin allow-list — client gate + server guard + Supabase RLS |
 | Which sign-in provider is used | `assets/auth.js` → `authMode` (`prototype` / `supabase` / `server`) |
 | Supabase project + keys | `assets/auth.js` → `supabase.url` / `supabase.anonKey` |
 | The settings panel (the cog) | `assets/auth.js` → `buildSettings()` |
@@ -155,6 +156,24 @@ Set by `assets/auth.js` → `authMode`:
 | `server` | the Node backend in `server/` | server-side session + allow-list | a self-hosted deploy |
 
 Setup walkthroughs: `supabase/README.md` and `server/README.md`.
+
+### Selling is admin-only
+
+The market is public to browse, but **setting up and posting goods or services
+is limited to the admins** — the two addresses on the allow-list. There is no
+public "Sell something" action anywhere: it is gone from the nav, the footers
+and every call-to-action.
+
+- The selling page is `sell.html`. It is hidden and gated by
+  `data-requires-admin` in `assets/auth.js`; a signed-out visitor sees a
+  *sign in as an admin* panel instead of the form.
+- Once an admin is signed in, the cog panel grows an **Admin** section linking
+  to it.
+- Defence in depth: the backend refuses `/sell.html` without an admin session
+  (403), and the Supabase RLS policies only let allow-listed accounts insert
+  listings — so the rule holds even with JavaScript bypassed.
+- To add or remove an admin, edit the allow-list (and the `allowed_emails`
+  table); the same two addresses govern sign-in and selling.
 
 ### ⚠️ This gate is not real security
 

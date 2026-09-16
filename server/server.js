@@ -32,6 +32,12 @@ const OAUTH_COOKIE_TTL = 600; // 10 minutes to finish a sign-in
 /** Never serve these, even to a signed-in visitor. */
 const BLOCKED_PREFIXES = ["/server/", "/.git/", "/.env", "/node_modules/"];
 
+/** Surfaces only an admin may reach: setting up and posting goods/services. */
+const ADMIN_ONLY_PREFIXES = ["/sell.html", "/api/listings"];
+function isAdminOnly(pathname) {
+  return ADMIN_ONLY_PREFIXES.some((p) => pathname === p || pathname.startsWith(p));
+}
+
 /* ── helpers ────────────────────────────────────────────────────────── */
 function esc(s) {
   return String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({
@@ -327,6 +333,21 @@ async function handle(req, res) {
   }
   if (pathname === "/auth/signout") {
     return signOut(res);
+  }
+
+  // Admin-only surface: setting up and posting goods or services.
+  if (isAdminOnly(pathname)) {
+    const who = await currentUser(req);
+    if (!who) {
+      return sendHtml(
+        res,
+        403,
+        errorPage(
+          "Admins only",
+          "Setting up and posting goods or services is limited to the family admins. Sign in with an approved account to continue."
+        )
+      );
+    }
   }
 
   if (req.method !== "GET" && req.method !== "HEAD") {

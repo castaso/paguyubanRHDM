@@ -80,7 +80,7 @@ generations). **Secondary:** invited friends of the family.
 | M1 | Home hub | Yes | News feed, upcoming events, featured listings, quick counts |
 | M2 | Marketplace browse | Yes | Grid, category filter, search, sort |
 | M3 | Listing detail | Yes | Photos area, price, seller, description, contact/reserve |
-| M4 | Post a listing | Yes | Validated form, category, price, condition/availability |
+| M4 | Post a listing | Yes — **admins only** | Validated form, category, price, condition/availability |
 | M5 | Family | Yes | Photo albums, member directory, recipe box |
 | M6 | Events | Yes | List + month grouping, RSVP counts |
 | M7 | About | Yes | How the market works, house rules, contact |
@@ -135,6 +135,10 @@ page. Every page reachable in one tap from anywhere.
   route back to the market.
 
 ### M4 — Post a listing
+- **FR4.0** Restricted to admins: the market is public to browse, but creating
+  and managing listings is limited to the two allow-listed admin accounts. There
+  is no public "Sell something" entry point; the page is gated client-side and
+  the backend refuses `/sell.html` without an admin session.
 - **FR4.1** Fields: title (required, 3–70), category (required), price
   (required, ≥0 or "free/borrow"), condition, location, description
   (required, 20–600).

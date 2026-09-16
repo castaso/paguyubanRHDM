@@ -56,7 +56,7 @@ That creates:
 | `allowed_emails` | The RBAC list — **edit this one to change who gets in** |
 | `is_allowed()` | Helper: is the current JWT's email on the list? |
 | `listings` | Marketplace rows, with a `seller_email` column |
-| policies | Anyone may *read* listings; only allowed accounts may write |
+| policies | Anyone may *read* listings; only the allow-listed admins may insert, update, or delete |
 
 > Change the two seeded addresses in `schema.sql` before running, or update the
 > table afterwards — it is the authoritative list.

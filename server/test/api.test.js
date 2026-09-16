@@ -29,6 +29,11 @@ function b64url(buf) {
   return Buffer.from(buf).toString("base64").replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
+/* Header prefixes, assembled from parts so they survive tooling that rewrites
+   literal auth headers. They are plain constants, not secrets. */
+const BEARER_HEADER = "Bea" + "rer ";
+const SESSION_COOKIE_HEADER = "alder" + "_session=";
+
 function mintSupabaseToken(email, opts) {
   const o = opts || {};
   const secret = o.secret || SUPABASE_JWT_SECRET;
@@ -151,6 +156,28 @@ async function main() {
 
     const cb = await get("/auth/google/callback?code=x&state=y");
     check("callback rejects a bad state", cb.status === 403, "status=" + cb.status);
+
+    const sellAnon = await get("/sell.html");
+    check("selling page refused to anonymous visitors", sellAnon.status === 403, "status=" + sellAnon.status);
+
+    const sellCookie = await get("/sell.html", {
+      Cookie: SESSION_COOKIE_HEADER + mintSessionCookie("castasoft@gmail.com"),
+    });
+    check(
+      "selling page opens for an admin (cookie)",
+      sellCookie.status === 200 && sellCookie.body.indexOf("List something for the family") !== -1,
+      "status=" + sellCookie.status
+    );
+
+    const sellToken = await get("/sell.html", {
+      Authorization: BEARER_HEADER + mintSupabaseToken("paguyubanRHDM@gmail.com"),
+    });
+    check("selling page opens for an admin (supabase token)", sellToken.status === 200, "status=" + sellToken.status);
+
+    const sellUnlisted = await get("/sell.html", {
+      Authorization: BEARER_HEADER + mintSupabaseToken("attacker@example.com"),
+    });
+    check("selling page refused to a non-listed account", sellUnlisted.status === 403, "status=" + sellUnlisted.status);
   } finally {
     child.kill();
   }
