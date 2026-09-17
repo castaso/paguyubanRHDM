@@ -3,18 +3,18 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Listing · Paguyuban RHDM</title>
-<meta name="description" content="A listing in the Paguyuban RHDM family market." />
+<title>Gallery · Paguyuban RHDM</title>
+<meta name="description" content="Every photo from the shared Paguyuban RHDM Drive folder, in one place." />
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 <link rel="stylesheet" href="assets/styles.css" />
-  <script src="assets/i18n.js"></script>
-  <script src="assets/i18n-content.js"></script>
-  <script src="assets/lang.js"></script>
-  <script src="assets/theme.js"></script>
-  <script src="assets/supabase-auth.js"></script>
-  <script src="assets/auth.js"></script>
-  <script src="assets/motion.js"></script>
-  <script src="assets/nav.js"></script>
+<script src="assets/i18n.js"></script>
+<script src="assets/i18n-content.js"></script>
+<script src="assets/lang.js"></script>
+<script src="assets/theme.js"></script>
+<script src="assets/supabase-auth.js"></script>
+<script src="assets/auth.js"></script>
+<script src="assets/motion.js"></script>
+<script src="assets/nav.js"></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -28,43 +28,37 @@
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
     </button>
     <div class="nav-drawer" id="nav-drawer">
-    <nav aria-label="Primary">
-      <a href="index.html" data-nav="index.html">Home</a>
-      <a href="marketplace.html" data-nav="marketplace.html">Market</a>
-      <a href="family.html" data-nav="family.html">Family</a>
-      <a href="events.html" data-nav="events.html">Calendar</a>
+      <nav aria-label="Primary">
+        <a href="index.html" data-nav="index.html">Home</a>
+        <a href="marketplace.html" data-nav="marketplace.html">Market</a>
+        <a href="family.html" data-nav="family.html">Family</a>
+        <a href="events.html" data-nav="events.html">Calendar</a>
         <a href="gallery.html" data-nav="gallery.html">Gallery</a>
-      <a href="about.html" data-nav="about.html">About</a>
-    </nav>
-<div class="topnav-actions">
-    </div>
+        <a href="about.html" data-nav="about.html">About</a>
+      </nav>
+      <div class="topnav-actions">
+      </div>
     </div>
   </div>
 </header>
 
 <div class="ticker" aria-hidden="true"><div class="ticker-track" id="ticker-track"></div></div>
+
 <main id="main">
   <div class="container">
-    <nav class="breadcrumb" aria-label="Breadcrumb">
-      <a href="index.html">Home</a> <span aria-hidden="true">/</span>
-      <a href="marketplace.html">Market</a> <span aria-hidden="true">/</span>
-      <span id="listing-crumb">Listing</span>
-    </nav>
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a> <span aria-hidden="true">/</span> <span>Gallery</span></nav>
   </div>
 
-  <section class="section" data-reveal style="padding-top:8px;">
-    <div class="container" id="listing-root">
-      <p class="muted">Loading…</p>
-    </div>
-  </section>
-
-  <section class="section" data-reveal id="listing-related-section">
+  <section class="section" style="padding-top:0;">
     <div class="container">
-      <div class="row-between" style="margin-bottom:26px;">
-        <h2 class="h3">More in the market</h2>
-        <a class="btn btn-ghost arrow" href="marketplace.html">Browse everything</a>
+      <p class="eyebrow">Photo gallery</p>
+      <div class="row-between" style="align-items:flex-end;margin-bottom:28px;gap:20px;">
+        <h1>Every photo from the shared folder</h1>
+        <a class="btn btn-secondary" id="gallery-folder" href="https://drive.google.com/drive/folders/1EtjoKRPvBGH6mtCLj5Go7JskUwdrgGsC" target="_blank" rel="noopener">Open the whole folder in Drive</a>
       </div>
-      <div class="listing-grid" id="listing-related"></div>
+      <p class="lead" id="gallery-note">This folder holds the family photos. The host does not allow images from other sites, so each one opens in Google Drive.</p>
+      <p class="meta" id="gallery-count" style="margin-bottom:26px;"></p>
+      <div class="gallery-grid" id="gallery-grid"></div>
     </div>
   </section>
 </main>
@@ -90,6 +84,7 @@
 </footer>
 
 <script src="assets/data.js"></script>
+<script src="assets/gallery-data.js"></script>
 <script src="assets/app.js"></script>
 </body>
 </html>

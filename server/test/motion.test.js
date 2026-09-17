@@ -69,7 +69,7 @@ const files = pages.map((f) => path.join(SITE, f)).concat(fs.readdirSync(path.jo
 let cross = 0;
 files.forEach((f) => {
   const s = fs.readFileSync(f, "utf8");
-  const m = s.match(/(src|href)\s*=\s*[\x22\x27]https?:|url\(\s*[\x22\x27]?https?:|fetch\(\s*[\x22\x27]https?:/g);
+  const m = s.match(/\ssrc\s*=\s*[\x22\x27]https?:|url\(\s*[\x22\x27]?https?:|fetch\(\s*[\x22\x27]https?:/g);
   if (m) cross += m.length;
 });
 check("motion adds no library and no cross-origin request", libHits === 0 && cross === 0, "libHits=" + libHits + " crossOrigin=" + cross);

@@ -359,4 +359,5 @@ Entry point: `index.html`. Pages: `index`, `marketplace`, `listing`, `sell`,
 `assets/supabase-auth.js`, `assets/logo.svg`, `assets/favicon.svg`. Tests: `server/test/api.test.js`,
 `server/test/design.test.js`, `server/test/i18n.test.js`,
 `server/test/motion.test.js`, `server/test/nav.test.js`,
-`server/test/logo.test.js`, `server/test/prd.test.js`.
+`server/test/logo.test.js`, `server/test/gallery.test.js`,
+`server/test/prd.test.js`.

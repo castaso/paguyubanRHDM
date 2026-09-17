@@ -551,6 +551,24 @@ html[data-theme="dark"] .icon-btn .icon-sun { display: block; }
 }
 .hero .container { position: relative; z-index: 1; }
 
+/* ─── gallery ────────────────────────────────────────────────────────── */
+.gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; }
+.gallery-card {
+  display: flex; flex-direction: column; overflow: hidden;
+  border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface);
+  transition: transform .14s cubic-bezier(.2,.7,.2,1), box-shadow .14s ease, border-color .14s ease;
+}
+.gallery-card:hover { border-color: var(--fg); box-shadow: var(--shadow-hard); transform: translate(-2px, -2px); }
+.gallery-media {
+  aspect-ratio: 4 / 3; display: grid; place-items: center; border-bottom: 1px solid var(--border);
+  background: linear-gradient(150deg, color-mix(in oklch, var(--brand-a) 12%, var(--surface)), color-mix(in oklch, var(--brand-b) 16%, var(--surface)));
+}
+.gallery-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
+.gallery-mono { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; color: var(--muted); }
+.gallery-body { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 14px; }
+.gallery-name { font-family: var(--font-mono); font-size: 11.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gallery-cta { font-size: 13px; font-weight: 600; color: var(--accent-text); white-space: nowrap; }
+
 /* brand pattern band: the logo's own gradient as a bold diagonal strip */
 .ticker { position: relative; padding-bottom: 10px; }
 .ticker::after {

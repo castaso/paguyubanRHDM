@@ -561,6 +561,40 @@
     track.innerHTML = items + items;
   }
 
+  /* Gallery: every photo in the shared Drive folder. The host forbids
+     third-party images, so each card links out to Drive. Set a same-origin
+     proxyBase and the cards render real thumbnails instead, with no other
+     change. */
+  function initGallery() {
+    var grid = $("#gallery-grid");
+    if (!grid) return;
+    var items = window.ALDER_GALLERY || [];
+    var cfg = window.ALDER_GALLERY_CONFIG || {};
+    var folder = $("#gallery-folder");
+    if (folder && cfg.folderUrl) folder.href = cfg.folderUrl;
+
+    if (!items.length) {
+      grid.innerHTML = '<div class="state" style="grid-column:1/-1;"><h3>' + T("No photos found") +
+        "</h3><p>" + T("The shared folder is empty or could not be read.") + "</p></div>";
+      relayout();
+      return;
+    }
+
+    grid.innerHTML = items.map(function (p) {
+      var media = cfg.proxyBase
+        ? '<img class="gallery-thumb" src="' + esc(cfg.proxyBase) + encodeURIComponent(p.id) + '" alt="" loading="lazy" />'
+        : '<span class="gallery-mono">' + esc(p.name.replace(/\.[^.]+$/, "")) + "</span>";
+      return '<a class="gallery-card" href="' + esc(p.open) + '" target="_blank" rel="noopener" data-tilt>' +
+        '<span class="gallery-media">' + media + "</span>" +
+        '<span class="gallery-body"><span class="gallery-name">' + esc(p.name) + "</span>" +
+        '<span class="gallery-cta">' + T("Open in Drive") + "</span></span></a>";
+    }).join("");
+
+    var countEl = $("#gallery-count");
+    if (countEl) countEl.textContent = tn("{n} photos in this folder", items.length);
+    relayout();
+  }
+
   function boot() {
     if (window.ALDER_LANG) D = window.ALDER_LANG.data() || D;
     setChrome();
@@ -571,6 +605,7 @@
     initEvents();
     initSell();
     initTicker();
+    initGallery();
     relayout();
     if (window.ALDER_MOTION) window.ALDER_MOTION.init();
   }
