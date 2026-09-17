@@ -227,7 +227,43 @@ Categories: `handmade · secondhand · services · produce · rentals · digital
 
 ---
 
-## 10. Non-functional requirements
+## 10. Design direction and visual language
+
+The look was refined twice: first to strip the generic template tells, then to
+the direction chosen in the design interview, **bold and graphic** with bold
+motion. It is recorded here because the look is part of the product, not
+incidental styling.
+
+**Palette.** Ink on paper with a single vermilion accent. Three accent roles are
+kept as separate tokens so contrast is measurable rather than assumed:
+
+| Token | Role | Light | Dark |
+|---|---|---|---|
+| `--accent` | brand and decoration | `#e8461f` | `#ff6b3d` |
+| `--accent-fill` | accent behind light text | `#c3350f` | `#ff6b3d` |
+| `--accent-text` | accent used as text | `#ad2f0c` | `#ffa07a` |
+| `--on-accent` | text sitting on a fill | `#fffdf7` | `#100e0c` |
+
+**Type.** Display is a heavy grotesque (an Arial Black stack at weight 900 with
+tight tracking) for graphic impact; body is the system sans; metadata is mono.
+The v1 serif display face was dropped when the direction changed.
+
+**Graphic devices.** 3px section rules, hard offset hover shadows, an oversized
+outlined word behind the hero, and a full-bleed ticker of live market items.
+
+**Motion.** Four parts: scroll reveals, parallax layers, card hover physics
+(tilt), and the marquee ticker. All hand-written with no library, because the
+host CSP blocks external scripts and there is no build step. Two rules hold it
+together: reveals are opt-in (content is hidden only once a script confirms
+motion is welcome, so a blocked script cannot blank the page) and
+`prefers-reduced-motion` disables all four.
+
+**Enforcement.** `server/test/design.test.js` computes WCAG contrast from the
+real token values in both themes and fails if any of 18 pairs drops below AA;
+`server/test/motion.test.js` asserts the four parts exist, that reduced motion
+disables them, and that no dependency or cross-origin request was added.
+
+## 11. Non-functional requirements
 
 - **NFR1 Hosting** — pure static output. No server runtime, no API, no database.
 - **NFR2 No external assets** — strict CSP at the host blocks every cross-origin
@@ -263,13 +299,13 @@ Categories: `handmade · secondhand · services · produce · rentals · digital
   `prefers-reduced-motion`, and it adds no library. Enforced by
   `server/test/motion.test.js`.
 
-- **NFR11** Responsive navigation - below 860px the nav and header controls
+- **NFR11** Responsive navigation - below 1024px the nav and header controls
   collapse into a drawer behind a hamburger that expands on click. It is a
   native button with `aria-expanded` and `aria-controls`, leaves the tab order
   when collapsed, and closes on Escape, outside click, link choice or resize.
   Desktop layout is unchanged. Enforced by `server/test/nav.test.js`.
 
-## 11. Success signals (v1, qualitative)
+## 12. Success signals (v1, qualitative)
 
 - A relative can list an item in under two minutes without instructions.
 - A visitor can reach any listing in ≤2 taps from the home page.
@@ -279,7 +315,7 @@ Categories: `handmade · secondhand · services · produce · rentals · digital
 
 ---
 
-## 12. Out of scope / next
+## 13. Out of scope / next
 
 **Deferred to v2:** message board, interactive family tree, real accounts,
 saved-search alerts, image upload (v1 uses tinted placeholder media),
@@ -300,7 +336,7 @@ This is a deliberate, labelled split — not an oversight.
 
 ---
 
-## 13. Delivery
+## 14. Delivery
 
 Static site served from the managed nginx static host.
 Entry point: `index.html`. Pages: `index`, `marketplace`, `listing`, `sell`,
@@ -309,4 +345,5 @@ Entry point: `index.html`. Pages: `index`, `marketplace`, `listing`, `sell`,
 `assets/i18n-content.js`, `assets/motion.js`, `assets/nav.js`, `assets/auth.js`,
 `assets/supabase-auth.js`. Tests: `server/test/api.test.js`,
 `server/test/design.test.js`, `server/test/i18n.test.js`,
-`server/test/motion.test.js`, `server/test/nav.test.js`.
+`server/test/motion.test.js`, `server/test/nav.test.js`,
+`server/test/prd.test.js`.
