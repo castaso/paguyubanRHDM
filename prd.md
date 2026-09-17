@@ -234,8 +234,10 @@ the direction chosen in the design interview, **bold and graphic** with bold
 motion. It is recorded here because the look is part of the product, not
 incidental styling.
 
-**Palette.** Ink on paper with a single vermilion accent. Three accent roles are
-kept as separate tokens so contrast is measurable rather than assumed:
+**Palette.** Ink on pure white (`#ffffff`) with the logo's red as the single
+accent. Dark is near-black: `--bg` `#0b0b0b`, cards lifted to `#151515`. The
+three accent roles stay separate tokens so contrast is measurable rather than
+assumed:
 
 | Token | Role | Light | Dark |
 |---|---|---|---|
@@ -254,7 +256,13 @@ tight tracking) for graphic impact; body is the system sans; metadata is mono.
 The v1 serif display face was dropped when the direction changed.
 
 **Graphic devices.** 3px section rules, hard offset hover shadows, an oversized
-outlined word behind the hero, and a full-bleed ticker of live market items.
+outlined word behind the hero, a full-bleed ticker of live market items, and a
+brand **pattern band** built from the logo's own gradient (`#ef4136` to
+`#fbb040`) as a bold diagonal strip beneath the header.
+
+The header and footer are **logo only**. The supplied logo spells the name, so
+the text label was removed rather than repeated; the name now lives in the
+image's `alt` text and the link's accessible name.
 
 **Motion.** Four parts: scroll reveals, parallax layers, card hover physics
 (tilt), and the marquee ticker. All hand-written with no library, because the

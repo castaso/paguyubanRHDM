@@ -53,12 +53,14 @@ check(
   "viewBox=" + favBox.join(" ") + " square=" + square
 );
 
-/* L5 the brand name survives next to the image (accessible name + i18n) */
-const noName = pages.filter((f) => {
-  const i = read(f).indexOf('class="brand-logo"');
-  return i === -1 || read(f).slice(i, i + 400).indexOf("Paguyuban RHDM") === -1;
-});
-check("the brand name is still present beside the logo", noName.length === 0, "missing=[" + noName + "]");
+/* L5 the logo stands alone and carries the name for assistive tech */
+const altBad = pages.filter((f) => (read(f).match(/alt="Paguyuban RHDM"/g) || []).length !== 2);
+const leftoverText = pages.filter((f) => read(f).indexOf("Paguyuban RHDM <small>") !== -1 || read(f).indexOf("est. 2019") !== -1);
+check(
+  "the logo stands alone and carries the brand name as alt text",
+  altBad.length === 0 && leftoverText.length === 0,
+  "altCountBad=[" + altBad + "] leftoverText=[" + leftoverText + "]"
+);
 
 /* L6 the server-rendered sign-in page uses the same asset */
 const srv = read("server/server.js");

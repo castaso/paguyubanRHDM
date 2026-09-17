@@ -20,7 +20,6 @@ window.ALDER_I18N.id = {
   "Skip to content": "Lompat ke konten",
   "Menu": "Menu",
   "Close menu": "Tutup menu",
-  "est. 2019": "sejak 2019",
   "Questions?": "Ada pertanyaan?",
   "· kept going by": "· dikelola oleh",
   "The site": "Situs",
