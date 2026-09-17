@@ -335,6 +335,33 @@ async function handle(req, res) {
     return signOut(res);
   }
 
+  /* Gallery thumbnails.
+   * The static host forbids third-party images (img-src 'self' data: blob: ...),
+   * so the gallery can point at this route instead and receive the Drive
+   * thumbnail same-origin. The id is validated to Drive's own shape and the
+   * upstream host is hard-coded, so this cannot be used as an open proxy. */
+  if (pathname === "/api/gallery/thumb") {
+    const id = url.searchParams.get("id") || "";
+    if (!/^[A-Za-z0-9_-]{20,}$/.test(id)) return sendJson(res, 400, { error: "invalid_id" });
+    try {
+      const upstream = await fetch(
+        "https://drive.google.com/thumbnail?id=" + encodeURIComponent(id) + "&sz=w1600",
+        { headers: { "user-agent": "Mozilla/5.0" } }
+      );
+      if (!upstream.ok) return sendJson(res, 502, { error: "upstream_" + upstream.status });
+      const buf = Buffer.from(await upstream.arrayBuffer());
+      res.writeHead(200, {
+        "Content-Type": upstream.headers.get("content-type") || "image/jpeg",
+        "Content-Length": buf.length,
+        "Cache-Control": "public, max-age=86400",
+        "X-Content-Type-Options": "nosniff",
+      });
+      return res.end(buf);
+    } catch (err) {
+      return sendJson(res, 502, { error: "upstream_unreachable" });
+    }
+  }
+
   // Admin-only surface: setting up and posting goods or services.
   if (isAdminOnly(pathname)) {
     const who = await currentUser(req);

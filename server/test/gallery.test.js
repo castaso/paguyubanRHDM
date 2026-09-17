@@ -69,6 +69,14 @@ check(
   "folderLink=" + /1EtjoKRPvBGH6mtCLj5Go7JskUwdrgGsC/.test(page)
 );
 
+/* the backend route that makes real thumbnails possible at all */
+const srv = read("server/server.js");
+check(
+  "the backend exposes a same-origin thumbnail proxy",
+  /\/api\/gallery\/thumb/.test(srv) && /invalid_id/.test(srv) && /drive\.google\.com\/thumbnail/.test(srv),
+  "route=" + /\/api\/gallery\/thumb/.test(srv) + " validatesId=" + /invalid_id/.test(srv)
+);
+
 const passed = results.filter((r) => r.ok).length;
 const failed = results.length - passed;
 results.forEach((r) => console.log((r.ok ? "PASS  " : "FAIL  ") + r.name + "  (" + r.detail + ")"));

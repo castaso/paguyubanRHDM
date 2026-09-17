@@ -26,7 +26,7 @@ window.ALDER_I18N.id = {
   "Photo gallery": "Galeri foto",
   "Every photo from the shared folder": "Semua foto dari folder bersama",
   "Open the whole folder in Drive": "Buka seluruh folder di Drive",
-  "This folder holds the family photos. The host does not allow images from other sites, so each one opens in Google Drive.": "Folder ini menyimpan foto keluarga. Host tidak mengizinkan gambar dari situs lain, jadi setiap foto dibuka di Google Drive.",
+  "This folder holds the family photos. The host does not allow images from other sites, so each card opens its photo in Google Drive.": "Folder ini menyimpan foto keluarga. Host tidak mengizinkan gambar dari situs lain, jadi setiap kartu membuka fotonya di Google Drive.",
   "{n} photos in this folder": "{n} foto di folder ini",
   "Open in Drive": "Buka di Drive",
   "No photos found": "Foto tidak ditemukan",

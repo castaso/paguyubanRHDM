@@ -584,7 +584,7 @@
       var media = cfg.proxyBase
         ? '<img class="gallery-thumb" src="' + esc(cfg.proxyBase) + encodeURIComponent(p.id) + '" alt="" loading="lazy" />'
         : '<span class="gallery-mono">' + esc(p.name.replace(/\.[^.]+$/, "")) + "</span>";
-      return '<a class="gallery-card" href="' + esc(p.open) + '" target="_blank" rel="noopener" data-tilt>' +
+      return '<a class="gallery-card" href="' + esc(p.open) + '" title="' + T("Open in Drive") + '" data-tilt>' +
         '<span class="gallery-media">' + media + "</span>" +
         '<span class="gallery-body"><span class="gallery-name">' + esc(p.name) + "</span>" +
         '<span class="gallery-cta">' + T("Open in Drive") + "</span></span></a>";
