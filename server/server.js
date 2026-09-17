@@ -133,7 +133,7 @@ function bearerToken(req) {
 
 /* ── pages ──────────────────────────────────────────────────────────── */
 const HOUSE_MARK =
-  '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.7" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10.5V20h13v-9.5"/><path d="M10 20v-5h4v5"/></svg>';
+  '<img class="brand-logo" src="/assets/logo.svg" alt="" aria-hidden="true" />';
 
 function loginPage(denied) {
   return `<!doctype html>

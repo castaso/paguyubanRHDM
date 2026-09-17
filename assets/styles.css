@@ -15,9 +15,9 @@
   --muted:   #57534a;
   --border:  #d9d3c5;
   --rule:    #12100d;
-  --accent:  #e8461f;
-  --accent-fill: #c3350f;
-  --accent-text: #ad2f0c;
+  --accent:  #ef4136;
+  --accent-fill: #be1e2d;
+  --accent-text: #be1e2d;
   --on-accent:   #fffdf7;
   --mix-to:      #fbfaf5;
   --scrim:       color-mix(in oklch, var(--fg) 34%, transparent);
@@ -78,9 +78,9 @@ html[data-theme="dark"] {
   --muted:   #a8a196;
   --border:  #322c26;
   --rule:    #f5f1e8;
-  --accent:  #ff6b3d;
-  --accent-fill: #ff6b3d;
-  --accent-text: #ffa07a;
+  --accent:  #ff6b5a;
+  --accent-fill: #ff6b5a;
+  --accent-text: #ff8f7a;
   --on-accent:   #100e0c;
   --mix-to:      #100e0c;
   --scrim:       color-mix(in oklch, #000000 62%, transparent);
@@ -191,7 +191,9 @@ h4, .h4 { font-size: var(--fs-h4); font-weight: 600; line-height: 1.35; margin: 
   border-bottom: 1px solid var(--border);
 }
 .topnav-inner { display: flex; align-items: center; justify-content: space-between; gap: var(--gap-md); padding-block: 12px; }
-.brand { display: inline-flex; align-items: baseline; gap: 8px; font-family: var(--font-display); font-size: 20px; font-weight: 600; letter-spacing: -0.01em; }
+.brand { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-display); font-size: 20px; font-weight: 600; letter-spacing: -0.01em; }
+.brand-logo { display: block; height: 26px; width: auto; flex: none; }
+.pagefoot .brand-logo { height: 30px; }
 .brand .brand-mark { color: var(--accent); font-size: 22px; line-height: 1; }
 .brand small { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); font-weight: 400; }
 .topnav nav { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }

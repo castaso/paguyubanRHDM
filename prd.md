@@ -239,10 +239,15 @@ kept as separate tokens so contrast is measurable rather than assumed:
 
 | Token | Role | Light | Dark |
 |---|---|---|---|
-| `--accent` | brand and decoration | `#e8461f` | `#ff6b3d` |
-| `--accent-fill` | accent behind light text | `#c3350f` | `#ff6b3d` |
-| `--accent-text` | accent used as text | `#ad2f0c` | `#ffa07a` |
+| `--accent` | brand and decoration | `#ef4136` | `#ff6b5a` |
+| `--accent-fill` | accent behind light text | `#be1e2d` | `#ff6b5a` |
+| `--accent-text` | accent used as text | `#be1e2d` | `#ff8f7a` |
 | `--on-accent` | text sitting on a fill | `#fffdf7` | `#100e0c` |
+
+The accent is taken from the logo itself, a red gradient running `#ef4136`
+through `#be1e2d` to `#fbb040`. The logo is the source of truth for colour:
+`assets/logo.svg` appears in the header and the footer of every page, and
+`assets/favicon.svg` is a square cut of the same artwork.
 
 **Type.** Display is a heavy grotesque (an Arial Black stack at weight 900 with
 tight tracking) for graphic impact; body is the system sans; metadata is mono.
@@ -343,7 +348,7 @@ Entry point: `index.html`. Pages: `index`, `marketplace`, `listing`, `sell`,
 `family`, `events`, `about`. Shared: `assets/styles.css`, `assets/app.js`,
 `assets/data.js`, `assets/theme.js`, `assets/lang.js`, `assets/i18n.js`,
 `assets/i18n-content.js`, `assets/motion.js`, `assets/nav.js`, `assets/auth.js`,
-`assets/supabase-auth.js`. Tests: `server/test/api.test.js`,
+`assets/supabase-auth.js`, `assets/logo.svg`, `assets/favicon.svg`. Tests: `server/test/api.test.js`,
 `server/test/design.test.js`, `server/test/i18n.test.js`,
 `server/test/motion.test.js`, `server/test/nav.test.js`,
-`server/test/prd.test.js`.
+`server/test/logo.test.js`, `server/test/prd.test.js`.
