@@ -12,17 +12,19 @@
     { id: "digital",    label: "Digital" }
   ];
 
+  var NOTEBOOK_URL = "https://notebook.google.com/notebook/2983b39b-e5cd-41e3-9b9f-e0c2cede3f54";
+
   var MEMBERS = [
-    { name: "Pearl Alder",      branch: "Grandparents", role: "Keeper of the recipes", place: "Coyote Creek, OR", initials: "PA" },
-    { name: "Al Alder",         branch: "Grandparents", role: "Grows more tomatoes than anyone can eat", place: "Coyote Creek, OR", initials: "AA" },
-    { name: "June Whitlock",    branch: "Second branch", role: "Sourdough, e-books, and unsolicited advice", place: "Tacoma, WA", initials: "JW" },
-    { name: "Ray Whitlock",     branch: "Second branch", role: "Furniture rescue", place: "Tacoma, WA", initials: "RW" },
-    { name: "Nora Alder",       branch: "Third branch",  role: "Knits, runs, ships things", place: "Bend, OR", initials: "NA" },
-    { name: "Theo Alder",       branch: "Third branch",  role: "Guitar teacher, bad at email", place: "Bend, OR", initials: "TA" },
-    { name: "Priya Raman",      branch: "Fourth branch", role: "Photographs everything", place: "Boise, ID", initials: "PR" },
-    { name: "Dev Okafor",       branch: "Fourth branch", role: "Cameras and camping gear", place: "Boise, ID", initials: "DO" },
-    { name: "Grandma Ivy",      branch: "Grandparents",  role: "Newest member, best sleeper", place: "Boise, ID", initials: "GI" },
-    { name: "Marcus Alder",     branch: "Second branch", role: "Keeps the site running", place: "Tacoma, WA", initials: "MA" }
+    { id: "pearl-alder", name: "Pearl Alder", branch: "Grandparents", role: "Keeper of the recipes", place: "Coyote Creek, OR", initials: "PA", tint: "--tint-6", bio: "Still the person everyone calls when a recipe has gone missing. Holds the original cinnamon-knot method and will not be rushed." },
+    { id: "al-alder", name: "Al Alder", branch: "Grandparents", role: "Grows more tomatoes than anyone can eat", place: "Coyote Creek, OR", initials: "AA", tint: "--tint-2", bio: "The orchard, the hens, and more tomatoes than a barn can hold. Turns eighty this year and has already forbidden speeches." },
+    { id: "june-whitlock", name: "June Whitlock", branch: "Second branch", role: "Sourdough, e-books, and unsolicited advice", place: "Tacoma, WA", initials: "JW", tint: "--tint-1", bio: "Keeper of the family starter since 2011. Types things down so nobody has to guess twice." },
+    { id: "ray-whitlock", name: "Ray Whitlock", branch: "Second branch", role: "Furniture rescue", place: "Tacoma, WA", initials: "RW", tint: "--tint-3", bio: "Refinishes tables, rebuilds chairs, and is honest about the water rings. Pickup only, he will help you load it." },
+    { id: "nora-alder", name: "Nora Alder", branch: "Third branch", role: "Knits, runs, ships things", place: "Bend, OR", initials: "NA", tint: "--tint-4", bio: "Merino socks made to order, and the first of us to finish the Bend half. Already signed up for the full one." },
+    { id: "theo-alder", name: "Theo Alder", branch: "Third branch", role: "Guitar teacher, bad at email", place: "Bend, OR", initials: "TA", tint: "--tint-5", bio: "Lessons for anyone in the family who asks. Replies to email eventually. Better in person." },
+    { id: "priya-raman", name: "Priya Raman", branch: "Fourth branch", role: "Photographs everything", place: "Boise, ID", initials: "PR", tint: "--tint-5", bio: "The albums exist because she keeps taking pictures. First photos of Ivy are hers." },
+    { id: "dev-okafor", name: "Dev Okafor", branch: "Fourth branch", role: "Cameras and camping gear", place: "Boise, ID", initials: "DO", tint: "--tint-4", bio: "Lends the good camera and the trailer when it is free. Knows which tent still has all its pegs." },
+    { id: "grandma-ivy", name: "Grandma Ivy", branch: "Grandparents", role: "Newest member, best sleeper", place: "Boise, ID", initials: "GI", tint: "--tint-1", bio: "Born on the fourth, eight pounds, already the calmest member of the fourth branch." },
+    { id: "marcus-alder", name: "Marcus Alder", branch: "Second branch", role: "Keeps the site running", place: "Tacoma, WA", initials: "MA", tint: "--tint-3", bio: "The organiser. News, dates, and the market all pass through him. Email him if something should be on the site." }
   ];
 
   var LISTINGS = [
@@ -270,6 +272,7 @@
     listings: LISTINGS,
     events: EVENTS,
     news: NEWS,
-    recipes: RECIPES
+    recipes: RECIPES,
+    notebookUrl: NOTEBOOK_URL
   };
 })();

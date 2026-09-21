@@ -9,7 +9,7 @@
  *   1. no duplicate or empty dictionary entries
  *   2. every dictionary key is actually present in the site source (no orphans)
  *   3. the content map covers every record, with the same shapes
- *   4. the switcher is wired into all 7 pages, before the other scripts
+ *   4. the switcher is wired into all pages, before the other scripts
  *   5. lang.js drives <html lang> and persists the choice
  */
 const fs = require("fs");
@@ -66,6 +66,9 @@ check("every listing has an Indonesian translation", missingListings.length === 
 
 const missingMembers = (DATA.members || []).filter((m) => !C.members || !C.members[m.name]);
 check("every member has an Indonesian translation", missingMembers.length === 0, "members=" + (DATA.members || []).length + " missing=[" + missingMembers.slice(0, 4).map((m) => m.name) + "]");
+
+const missingBios = (DATA.members || []).filter((m) => m.bio && (!C.members || !C.members[m.name] || !C.members[m.name].bio));
+check("every member bio is translated", missingBios.length === 0, "missing=[" + missingBios.slice(0, 4).map((m) => m.name) + "]");
 
 const shapeErrors = [];
 const SKIP_FIELDS = ["date", "posted", "minutes", "by", "author", "id", "price", "priceUnit", "tint"];

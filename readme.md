@@ -13,6 +13,8 @@ external assets. Open `index.html` and it runs.
 ├── sell.html           Post a listing (validated form)
 ├── family.html         Albums, recipe box, directory, latest news
 ├── events.html         Calendar grouped by month
+├── gallery.html        Shared Drive photos (cards link out)
+├── profiles.html       Member profiles + family notebook showcase
 ├── about.html          How the market works + house rules
 ├── PRD.md              The product requirements document
 ├── assets/
@@ -35,7 +37,7 @@ external assets. Open `index.html` and it runs.
 │   ├── server.js          HTTP server, routes, settings API
 │   ├── config.js          Environment configuration
 │   ├── lib/               oauth.js · session.js · rbac.js · supabase-token.js · static-site.js
-│   ├── test/              api.test.js (access) · design.test.js (theme, contrast, copy) · i18n.test.js (languages) · motion.test.js (motion) · nav.test.js (mobile nav)
+│   ├── test/              api.test.js · design.test.js · i18n.test.js · motion.test.js · nav.test.js · gallery.test.js · profiles.test.js · prd.test.js
 │   ├── .env.example       Copy to .env and fill in
 │   ├── Dockerfile
 │   └── README.md          Backend setup + deployment
@@ -72,6 +74,7 @@ in `server/README.md`.
 | A listing (title, price, seller, text) | `assets/data.js` → `LISTINGS` |
 | Categories in the filter bar | `assets/data.js` → `CATEGORIES` |
 | Family members / directory | `assets/data.js` → `MEMBERS` |
+| Profiles / family notebook | `assets/data.js` → `MEMBERS` + `notebookUrl`; page is `profiles.html` |
 | Events / calendar | `assets/data.js` → `EVENTS` |
 | News posts | `assets/data.js` → `NEWS` |
 | Recipes | `assets/data.js` → `RECIPES` |
@@ -129,6 +132,7 @@ cross-origin requests.
 | Listing detail | Reads `?id=`; unknown/missing id renders a not-found panel with a route back |
 | Sell form | Validates each field on blur; re-validates on input once invalid; builds an error summary on submit and moves focus to it; keeps values on failure; shows a success state that does not lose what you typed |
 | Calendar | Groups upcoming events by month; empty calendar gets its own state |
+| Profiles | Lists every member; reads `?id=` for a profile (bio, listings, recipes, posts); unknown id renders not-found. The family notebook is showcased as a card that opens Google Notebook, because the host cannot embed other sites. |
 
 **Seeing the non-default states without breaking anything:** the market shows the
 loading state on every filter change, the empty state when a search matches

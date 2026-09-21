@@ -85,8 +85,9 @@ generations). **Secondary:** invited friends of the family.
 | M6 | Events | Yes | List + month grouping, RSVP counts |
 | M7 | About | Yes | How the market works, house rules, contact |
 | M8 | Access control + sign-in | Yes | Settings cog, RBAC allow-list, three sign-in modes (prototype / Supabase / server) |
-| M9 | Message board | Deferred | v2 |
-| M10 | Family tree | Deferred | v2 (interactive) |
+| M9 | Profiles | Yes | Member profiles, profile detail, family notebook showcase |
+| M10 | Message board | Deferred | v2 |
+| M11 | Family tree | Deferred | v2 (interactive) |
 
 ---
 
@@ -98,12 +99,15 @@ Home (hub)
 │   └── Sell something (listing form)
 ├── Family  (news · albums · directory · recipes)
 ├── Calendar (events)
+├── Gallery
+├── Profiles ──▶ Profile detail
+│   └── Family notebook (opens in Google Notebook)
 └── About   (how it works · house rules)
 ```
 
-**Global chrome:** sticky top nav (Home · Market · Family · Calendar · About +
-a primary "Sell something" action) and a four-column footer present on every
-page. Every page reachable in one tap from anywhere.
+**Global chrome:** sticky top nav (Home · Market · Family · Calendar · Gallery ·
+Profiles · About) and a four-column footer present on every page. Every page
+reachable in one tap from anywhere.
 
 ---
 
@@ -152,7 +156,8 @@ page. Every page reachable in one tap from anywhere.
 
 ### M5 — Family
 - **FR5.1** Photo album grid with cover, title, and count.
-- **FR5.2** Member directory: name, branch, place, role.
+- **FR5.2** Member directory: name, branch, place, role. Each card links to that
+  member's profile.
 - **FR5.3** Recipe box: title, by, time, tags, short note.
 
 ### M6 — Events
@@ -191,6 +196,21 @@ page. Every page reachable in one tap from anywhere.
   server and its CSP blocks Google's and Supabase's origins. The prototype is
   labelled as such on screen and in `assets/auth.js`.
 
+### M9 — Profiles
+- **FR9.1** A Profiles page lists every member as a card (name, branch, place,
+  role) and links each card to `profiles.html?id=<member-id>`.
+- **FR9.2** The page showcases the family notebook at
+  `https://notebook.google.com/notebook/2983b39b-e5cd-41e3-9b9f-e0c2cede3f54`.
+  The host CSP forbids embedding other origins (`X-Frame-Options: DENY`,
+  `default-src 'self'`), so the notebook is a card that opens in a new tab
+  rather than an iframe, the same contract as the Gallery.
+- **FR9.3** Profile detail reads `?id=` from the URL and renders that member:
+  bio, branch, place, their market listings, recipes, and recent posts.
+- **FR9.4** Unknown or missing `id` renders a not-found state with a route back
+  to Profiles.
+- **FR9.5** Each profile links out to the same family notebook for the longer
+  notes that do not live on the site.
+
 ---
 
 ## 8. States (every data surface)
@@ -215,7 +235,7 @@ invalid-after-submit, submitting, success.
 ## 9. Content model
 
 ```
-Member  { name, branch, role, place, initials }
+Member  { id, name, branch, role, place, initials, tint, bio }
 Listing { id, title, category, price, priceUnit, condition, seller,
           place, posted, blurb, details[], tags[], tint }
 Event   { date, title, place, kind, note, going }
@@ -353,11 +373,12 @@ This is a deliberate, labelled split — not an oversight.
 
 Static site served from the managed nginx static host.
 Entry point: `index.html`. Pages: `index`, `marketplace`, `listing`, `sell`,
-`family`, `events`, `about`. Shared: `assets/styles.css`, `assets/app.js`,
+`family`, `events`, `gallery`, `profiles`, `about`. Shared: `assets/styles.css`, `assets/app.js`,
 `assets/data.js`, `assets/theme.js`, `assets/lang.js`, `assets/i18n.js`,
 `assets/i18n-content.js`, `assets/motion.js`, `assets/nav.js`, `assets/auth.js`,
 `assets/supabase-auth.js`, `assets/logo.svg`, `assets/favicon.svg`. Tests: `server/test/api.test.js`,
 `server/test/design.test.js`, `server/test/i18n.test.js`,
 `server/test/motion.test.js`, `server/test/nav.test.js`,
 `server/test/logo.test.js`, `server/test/gallery.test.js`,
+`server/test/profiles.test.js`,
 `server/test/prd.test.js`.

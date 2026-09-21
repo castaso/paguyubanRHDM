@@ -23,6 +23,7 @@ window.ALDER_I18N.id = {
 
   /* ── gallery ────────────────────────────────────────────────────────── */
   "Gallery": "Galeri",
+  "Profiles": "Profil",
   "Photo gallery": "Galeri foto",
   "Every photo from the shared folder": "Semua foto dari folder bersama",
   "Open the whole folder in Drive": "Buka seluruh folder di Drive",
@@ -33,6 +34,16 @@ window.ALDER_I18N.id = {
   "The shared folder is empty or could not be read.": "Folder bersama kosong atau tidak dapat dibaca.",
   "Gallery · Paguyuban RHDM": "Galeri · Paguyuban RHDM",
   "Every photo from the shared Paguyuban RHDM Drive folder, in one place.": "Semua foto dari folder Drive Paguyuban RHDM, di satu tempat.",
+  "Profiles · Paguyuban RHDM": "Profil · Paguyuban RHDM",
+  "Who is who in Paguyuban RHDM, and the family notebook that holds the longer stories.": "Siapa siapa di Paguyuban RHDM, dan buku catatan keluarga yang menyimpan cerita yang lebih panjang.",
+  "Who is who": "Siapa siapa",
+  "Profiles of the house": "Profil rumah ini",
+  "A page for each relative, and the family notebook that holds the longer stories behind them.": "Satu halaman untuk setiap kerabat, dan buku catatan keluarga yang menyimpan cerita yang lebih panjang di baliknya.",
+  "Longer stories, kept in one notebook": "Cerita yang lebih panjang, tersimpan di satu buku catatan",
+  "The notebook holds the longer notes behind these profiles: who is related to whom, the recipes that did not fit the box, and the reunion write-ups. The host cannot embed other sites, so this card opens it in Google Notebook.": "Buku catatan ini menyimpan catatan yang lebih panjang di balik profil: siapa terkait dengan siapa, resep yang tidak muat di kotak, dan tulisan reuni. Host tidak dapat menyematkan situs lain, jadi kartu ini membukanya di Google Notebook.",
+  "Open the family notebook": "Buka buku catatan keluarga",
+  "Everyone with a profile": "Semua yang punya profil",
+  "Profile": "Profil",
   "Questions?": "Ada pertanyaan?",
   "· kept going by": "· dikelola oleh",
   "The site": "Situs",
@@ -113,7 +124,6 @@ window.ALDER_I18N.id = {
   "Recent posts": "Kabar terbaru",
   "Photos, corrections, a recipe nobody has written down yet, or a milestone we missed. Anything sent to the organiser ends up somewhere on this page.": "Foto, koreksi, resep yang belum pernah ditulis, atau momen yang terlewat. Apa pun yang dikirim ke pengurus akan berakhir di halaman ini.",
   "Who is where": "Siapa di mana",
-  "10 members · 4 branches": "10 anggota · 4 cabang",
 
   /* ── events ─────────────────────────────────────────────────────────── */
   "What is coming up": "Agenda mendatang",

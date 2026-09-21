@@ -149,7 +149,8 @@
       listings: fromMap(base.listings || [], C.listings, "id"),
       events: byIndex(base.events || [], C.events),
       news: byIndex(base.news || [], C.news),
-      recipes: byIndex(base.recipes || [], C.recipes)
+      recipes: byIndex(base.recipes || [], C.recipes),
+      notebookUrl: base.notebookUrl
     };
   }
 

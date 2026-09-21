@@ -39,6 +39,23 @@ Object.assign(window.ALDER_I18N.id, {
   "events coming up": "acara mendatang",
   "shared recipes": "resep bersama",
 
+  /* app.js: profiles */
+  "{n} members": "{n} anggota",
+  "{n} branches": "{n} cabang",
+  "No profiles yet": "Belum ada profil",
+  "The directory is empty.": "Direktori masih kosong.",
+  "Not found": "Tidak ditemukan",
+  "Profile not found": "Profil tidak ditemukan",
+  "That profile is not here": "Profil itu tidak ada di sini",
+  "We could not find a relative with that reference.": "Kami tidak menemukan kerabat dengan rujukan itu.",
+  "Back to profiles": "Kembali ke profil",
+  "Read more in the notebook": "Baca selengkapnya di buku catatan",
+  "All profiles": "Semua profil",
+  "In the market": "Di pasar",
+  "Nothing listed in the market right now.": "Tidak ada barang di pasar saat ini.",
+  "From the recipe box": "Dari buku resep",
+  "Posted recently": "Baru-baru ini ditulis",
+
   /* app.js: albums */
   "Reunion 2025": "Reuni 2025",
   "The cabin kitchen": "Dapur pondok",
@@ -233,16 +250,16 @@ window.ALDER_I18N_CONTENT.id = {
     }
   },
   members: {
-    "Pearl Alder": { branch: "Kakek-nenek", role: "Penjaga resep komunitas" },
-    "Al Alder": { branch: "Kakek-nenek", role: "Menanam tomat lebih banyak daripada yang bisa dihabiskan siapa pun" },
-    "June Whitlock": { branch: "Cabang kedua", role: "Biang roti, buku digital, dan nasihat yang tidak diminta" },
-    "Ray Whitlock": { branch: "Cabang kedua", role: "Penyelamat mebel" },
-    "Nora Alder": { branch: "Cabang ketiga", role: "Merajut, berlari, mengirim barang" },
-    "Theo Alder": { branch: "Cabang ketiga", role: "Guru gitar, lambat membalas email" },
-    "Priya Raman": { branch: "Cabang keempat", role: "Memotret semuanya" },
-    "Dev Okafor": { branch: "Cabang keempat", role: "Kamera dan alat kemah" },
-    "Grandma Ivy": { branch: "Kakek-nenek", role: "Anggota termuda, paling mahir tidur" },
-    "Marcus Alder": { branch: "Cabang kedua", role: "Menjaga situs tetap berjalan" }
+    "Pearl Alder": { branch: "Kakek-nenek", role: "Penjaga resep komunitas", bio: "Masih orang yang dihubungi siapa pun ketika resep hilang. Memegang cara asli simpul kayu manis dan tidak suka diburu-buru." },
+    "Al Alder": { branch: "Kakek-nenek", role: "Menanam tomat lebih banyak daripada yang bisa dihabiskan siapa pun", bio: "Kebun, ayam-ayam, dan tomat lebih banyak daripada yang muat di lumbung. Tahun ini genap delapan puluh dan sudah melarang pidato." },
+    "June Whitlock": { branch: "Cabang kedua", role: "Biang roti, buku digital, dan nasihat yang tidak diminta", bio: "Penjaga biang roti keluarga sejak 2011. Menuliskan segala sesuatu agar tidak ada yang menebak dua kali." },
+    "Ray Whitlock": { branch: "Cabang kedua", role: "Penyelamat mebel", bio: "Mengamplas meja, memperbaiki kursi, dan jujur soal bekas air. Hanya diambil sendiri, ia akan membantu mengangkatnya." },
+    "Nora Alder": { branch: "Cabang ketiga", role: "Merajut, berlari, mengirim barang", bio: "Kaus kaki merino pesanan, dan yang pertama di antara kami menuntaskan half-marathon Bend. Sudah mendaftar untuk jarak penuh." },
+    "Theo Alder": { branch: "Cabang ketiga", role: "Guru gitar, lambat membalas email", bio: "Les bagi siapa pun di keluarga yang meminta. Emailnya dibalas akhirnya. Lebih baik bertemu langsung." },
+    "Priya Raman": { branch: "Cabang keempat", role: "Memotret semuanya", bio: "Album-album ada karena ia terus memotret. Foto pertama Ivy miliknya." },
+    "Dev Okafor": { branch: "Cabang keempat", role: "Kamera dan alat kemah", bio: "Meminjamkan kamera yang bagus dan kereta kemah ketika sedang kosong. Tahu tenda mana yang masih lengkap pasaknya." },
+    "Grandma Ivy": { branch: "Kakek-nenek", role: "Anggota termuda, paling mahir tidur", bio: "Lahir tanggal empat, berat delapan pon, sudah jadi anggota cabang keempat yang paling tenang." },
+    "Marcus Alder": { branch: "Cabang kedua", role: "Menjaga situs tetap berjalan", bio: "Pengurusnya. Kabar, tanggal, dan pasar semuanya lewat dia. Kirimi email jika sesuatu harus ada di situs." }
   },
   events: [
     { title: "Makan bersama + panggilan video", place: "Semua orang, di mana pun berada", kind: "Rutin", note: "Kamera menyala pukul enam. Pearl yang memasak daging domba dan menceritakannya." },

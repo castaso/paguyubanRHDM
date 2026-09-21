@@ -3,18 +3,18 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Listing · Paguyuban RHDM</title>
-<meta name="description" content="A listing in the Paguyuban RHDM family market." />
+<title>Profiles · Paguyuban RHDM</title>
+<meta name="description" content="Who is who in Paguyuban RHDM, and the family notebook that holds the longer stories." />
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 <link rel="stylesheet" href="assets/styles.css" />
-  <script src="assets/i18n.js"></script>
-  <script src="assets/i18n-content.js"></script>
-  <script src="assets/lang.js"></script>
-  <script src="assets/theme.js"></script>
-  <script src="assets/supabase-auth.js"></script>
-  <script src="assets/auth.js"></script>
-  <script src="assets/motion.js"></script>
-  <script src="assets/nav.js"></script>
+<script src="assets/i18n.js"></script>
+<script src="assets/i18n-content.js"></script>
+<script src="assets/lang.js"></script>
+<script src="assets/theme.js"></script>
+<script src="assets/supabase-auth.js"></script>
+<script src="assets/auth.js"></script>
+<script src="assets/motion.js"></script>
+<script src="assets/nav.js"></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -28,46 +28,65 @@
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
     </button>
     <div class="nav-drawer" id="nav-drawer">
-    <nav aria-label="Primary">
-      <a href="index.html" data-nav="index.html">Home</a>
-      <a href="marketplace.html" data-nav="marketplace.html">Market</a>
-      <a href="family.html" data-nav="family.html">Family</a>
-      <a href="events.html" data-nav="events.html">Calendar</a>
+      <nav aria-label="Primary">
+        <a href="index.html" data-nav="index.html">Home</a>
+        <a href="marketplace.html" data-nav="marketplace.html">Market</a>
+        <a href="family.html" data-nav="family.html">Family</a>
+        <a href="events.html" data-nav="events.html">Calendar</a>
         <a href="gallery.html" data-nav="gallery.html">Gallery</a>
         <a href="profiles.html" data-nav="profiles.html">Profiles</a>
-      <a href="about.html" data-nav="about.html">About</a>
-    </nav>
-<div class="topnav-actions">
-    </div>
+        <a href="about.html" data-nav="about.html">About</a>
+      </nav>
+      <div class="topnav-actions">
+      </div>
     </div>
   </div>
 </header>
 
 <div class="ticker" aria-hidden="true"><div class="ticker-track" id="ticker-track"></div></div>
+
 <main id="main">
   <div class="container">
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <a href="index.html">Home</a> <span aria-hidden="true">/</span>
-      <a href="marketplace.html">Market</a> <span aria-hidden="true">/</span>
-      <span id="listing-crumb">Listing</span>
+      <a href="profiles.html" id="profiles-crumb-list">Profiles</a>
+      <span id="profiles-crumb-sep" hidden aria-hidden="true">/</span>
+      <span id="profiles-crumb" hidden>Profile</span>
     </nav>
   </div>
 
-  <section class="section" data-reveal style="padding-top:8px;">
-    <div class="container" id="listing-root">
-      <p class="muted">Loading…</p>
-    </div>
-  </section>
-
-  <section class="section" data-reveal id="listing-related-section">
-    <div class="container">
-      <div class="row-between" style="margin-bottom:26px;">
-        <h2 class="h3">More in the market</h2>
-        <a class="btn btn-ghost arrow" href="marketplace.html">Browse everything</a>
+  <div id="profiles-root">
+    <section class="section" data-reveal style="padding-top:8px;">
+      <div class="container" style="max-width:62ch;">
+        <p class="eyebrow">Who is who</p>
+        <h1>Profiles of the house</h1>
+        <p class="lead" style="margin-top:16px;">A page for each relative, and the family notebook that holds the longer stories behind them.</p>
       </div>
-      <div class="listing-grid" id="listing-related"></div>
-    </div>
-  </section>
+    </section>
+    <section class="section" data-reveal>
+      <div class="container">
+        <article class="notebook-card">
+          <div class="notebook-mark" aria-hidden="true">NB</div>
+          <div>
+            <h2>Longer stories, kept in one notebook</h2>
+            <p class="lead" style="margin-top:12px;">The notebook holds the longer notes behind these profiles: who is related to whom, the recipes that did not fit the box, and the reunion write-ups. The host cannot embed other sites, so this card opens it in Google Notebook.</p>
+            <div class="hero-cta" style="margin-top:22px;">
+              <a class="btn btn-primary" id="notebook-open" href="https://notebook.google.com/notebook/2983b39b-e5cd-41e3-9b9f-e0c2cede3f54" rel="noopener">Open the family notebook</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+    <section class="section" data-reveal>
+      <div class="container">
+        <div class="row-between" style="margin-bottom:28px;">
+          <div><h2>Everyone with a profile</h2></div>
+          <p class="meta" id="profiles-count"></p>
+        </div>
+        <div class="profiles-grid" id="profiles-grid"></div>
+      </div>
+    </section>
+  </div>
 </main>
 
 <footer class="pagefoot">

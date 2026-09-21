@@ -398,11 +398,12 @@
     var members = $("#family-members");
     if (members) {
       members.innerHTML = D.members.map(function (m) {
-        return '<div class="member-card">' +
-          '<span class="avatar avatar-lg" aria-hidden="true">' + esc(m.initials) + "</span>" +
+        var href = m.id ? "profiles.html?id=" + encodeURIComponent(m.id) : "profiles.html";
+        return '<a class="member-card" href="' + href + '">' +
+          '<span class="avatar avatar-lg" aria-hidden="true" style="--card-tint: var(' + esc(m.tint || "--tint-3") + ')">' + esc(m.initials) + "</span>" +
           "<div><div class=\"m-name\">" + esc(m.name) + '</div><div class="meta">' + esc(m.branch) + " · " + esc(m.place) + "</div>" +
           '<p class="muted" style="font-size:13.5px;margin:6px 0 0;">' + esc(m.role) + "</p></div>" +
-        "</div>";
+        "</a>";
       }).join("");
     }
 
@@ -561,6 +562,138 @@
     track.innerHTML = items + items;
   }
 
+  /* Profiles: member directory plus the family notebook. The notebook lives
+     on notebook.google.com; the host forbids embedding other origins, so the
+     page showcases it as a card that opens the notebook in a new tab. */
+  function initProfiles() {
+    var root = $("#profiles-root");
+    if (!root) return;
+    var params = new URLSearchParams(location.search);
+    var id = params.get("id");
+    var open = $("#notebook-open");
+    if (open && D.notebookUrl) open.href = D.notebookUrl;
+    if (id) renderProfileDetail(root, id);
+    else renderProfileList();
+  }
+
+  function profileCard(m) {
+    return '<a class="profile-card" href="profiles.html?id=' + encodeURIComponent(m.id) + '" data-tilt>' +
+      '<span class="avatar avatar-xl" aria-hidden="true" style="--card-tint: var(' + esc(m.tint || "--tint-3") + ')">' + esc(m.initials) + "</span>" +
+      "<div>" +
+        '<div class="m-name">' + esc(m.name) + "</div>" +
+        '<div class="meta">' + esc(m.branch) + " · " + esc(m.place) + "</div>" +
+        '<p class="muted" style="font-size:14px;margin:8px 0 0;">' + esc(m.role) + "</p>" +
+      "</div>" +
+    "</a>";
+  }
+
+  function renderProfileList() {
+    var crumb = $("#profiles-crumb");
+    var sep = $("#profiles-crumb-sep");
+    if (crumb) { crumb.hidden = true; crumb.textContent = ""; }
+    if (sep) sep.hidden = true;
+    document.title = T("Profiles · Paguyuban RHDM");
+
+    var grid = $("#profiles-grid");
+    if (grid) {
+      if (!D.members.length) {
+        grid.innerHTML = '<div class="state" style="grid-column:1/-1;"><h3>' + T("No profiles yet") +
+          "</h3><p>" + T("The directory is empty.") + "</p></div>";
+      } else {
+        grid.innerHTML = D.members.map(profileCard).join("");
+      }
+    }
+
+    var branches = [];
+    D.members.forEach(function (m) {
+      if (branches.indexOf(m.branch) === -1) branches.push(m.branch);
+    });
+    var countEl = $("#profiles-count");
+    if (countEl) countEl.textContent = tn("{n} members", D.members.length) + " · " + tn("{n} branches", branches.length);
+    relayout();
+  }
+
+  function renderProfileDetail(root, id) {
+    var m = null;
+    for (var i = 0; i < D.members.length; i++) {
+      if (D.members[i].id === id) { m = D.members[i]; break; }
+    }
+    var crumb = $("#profiles-crumb");
+    var sep = $("#profiles-crumb-sep");
+
+    if (!m) {
+      if (sep) sep.hidden = false;
+      if (crumb) { crumb.hidden = false; crumb.textContent = T("Not found"); }
+      document.title = T("Profile not found") + " · " + D.site.brand;
+      root.innerHTML =
+        '<section class="section" style="padding-top:8px;"><div class="container">' +
+          '<div class="state"><h1>' + T("That profile is not here") + "</h1>" +
+          "<p>" + T("We could not find a relative with that reference.") + "</p>" +
+          '<a class="btn btn-primary" href="profiles.html">' + T("Back to profiles") + "</a></div>" +
+        "</div></section>";
+      relayout();
+      return;
+    }
+
+    if (sep) sep.hidden = false;
+    if (crumb) { crumb.hidden = false; crumb.textContent = m.name; }
+    document.title = m.name + " · " + D.site.brand;
+
+    var listings = D.listings.filter(function (l) { return l.seller === m.name; });
+    var recipes = D.recipes.filter(function (r) { return r.by === m.name; });
+    var news = D.news.filter(function (n) { return n.author === m.name; });
+    var url = D.notebookUrl || "https://notebook.google.com/notebook/2983b39b-e5cd-41e3-9b9f-e0c2cede3f54";
+
+    var marketHtml = listings.length
+      ? '<div class="listing-grid" style="margin-top:18px;">' + listings.map(listingCard).join("") + "</div>"
+      : '<p class="muted" style="margin-top:12px;">' + T("Nothing listed in the market right now.") + "</p>";
+
+    var recipeHtml = recipes.length
+      ? '<div class="stack" style="margin-top:14px;">' + recipes.map(function (r) {
+          return '<article class="recipe-card"><h3>' + esc(r.title) + "</h3>" +
+            '<p class="meta">' + r.minutes + " min</p>" +
+            '<p class="muted" style="font-size:14px;margin:0;">' + esc(r.note) + "</p></article>";
+        }).join("") + "</div>"
+      : "";
+
+    var newsHtml = news.length
+      ? '<div style="margin-top:14px;">' + news.map(function (n) {
+          return '<div class="feed-item"><div><span class="badge">' + esc(n.tag) + "</span></div>" +
+            "<div><h3>" + esc(n.title) + "</h3><p>" + esc(n.excerpt) + "</p></div></div>";
+        }).join("") + "</div>"
+      : "";
+
+    root.innerHTML =
+      '<section class="section" data-reveal style="padding-top:8px;">' +
+        '<div class="container profile-hero">' +
+          '<span class="avatar avatar-hero" aria-hidden="true" style="--card-tint: var(' + esc(m.tint || "--tint-3") + ')">' + esc(m.initials) + "</span>" +
+          "<div>" +
+            '<p class="eyebrow">' + esc(m.branch) + "</p>" +
+            "<h1>" + esc(m.name) + "</h1>" +
+            '<p class="lead" style="margin-top:14px;">' + esc(m.bio || m.role) + "</p>" +
+            '<p class="meta" style="margin-top:16px;">' + esc(m.role) + " · " + esc(m.place) + "</p>" +
+            '<div class="hero-cta" style="margin-top:22px;">' +
+              '<a class="btn btn-primary" href="' + esc(url) + '" rel="noopener">' + T("Read more in the notebook") + "</a>" +
+              '<a class="btn btn-ghost" href="profiles.html">' + T("All profiles") + "</a>" +
+            "</div>" +
+          "</div>" +
+        "</div>" +
+      "</section>" +
+      '<section class="section" data-reveal>' +
+        '<div class="container">' +
+          "<h2>" + T("In the market") + "</h2>" +
+          marketHtml +
+        "</div>" +
+      "</section>" +
+      (recipeHtml
+        ? '<section class="section" data-reveal><div class="container"><h2>' + T("From the recipe box") + "</h2>" + recipeHtml + "</div></section>"
+        : "") +
+      (newsHtml
+        ? '<section class="section" data-reveal><div class="container"><h2>' + T("Posted recently") + "</h2>" + newsHtml + "</div></section>"
+        : "");
+    relayout();
+  }
+
   /* Gallery: every photo in the shared Drive folder. The host forbids
      third-party images, so each card links out to Drive. Set a same-origin
      proxyBase and the cards render real thumbnails instead, with no other
@@ -606,6 +739,7 @@
     initSell();
     initTicker();
     initGallery();
+    initProfiles();
     relayout();
     if (window.ALDER_MOTION) window.ALDER_MOTION.init();
   }
