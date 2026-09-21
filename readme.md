@@ -20,6 +20,7 @@ external assets. Open `index.html` and it runs.
 ├── assets/
 │   ├── styles.css         All styling. Design tokens live in :root at the top.
 │   ├── data.js            All content — listings, members, events, news, recipes
+│   ├── catalog.js         Invisible bottom-left cog: add / edit / delete listings
 │   ├── app.js             Filtering, detail rendering, form validation, chrome
 │   ├── auth.js            Settings panel + sign-in (three modes, see below)
 │   ├── supabase-auth.js   Zero-dependency Supabase Auth client
@@ -37,7 +38,7 @@ external assets. Open `index.html` and it runs.
 │   ├── server.js          HTTP server, routes, settings API
 │   ├── config.js          Environment configuration
 │   ├── lib/               oauth.js · session.js · rbac.js · supabase-token.js · static-site.js
-│   ├── test/              api.test.js · design.test.js · i18n.test.js · motion.test.js · nav.test.js · gallery.test.js · profiles.test.js · prd.test.js
+│   ├── test/              api.test.js · design.test.js · i18n.test.js · motion.test.js · nav.test.js · gallery.test.js · profiles.test.js · catalog.test.js · prd.test.js
 │   ├── .env.example       Copy to .env and fill in
 │   ├── Dockerfile
 │   └── README.md          Backend setup + deployment
@@ -88,6 +89,8 @@ in `server/README.md`.
 | Supabase project + keys | `assets/auth.js` → `supabase.url` / `supabase.anonKey` |
 | The settings panel (the cog) | `assets/auth.js` → `buildSettings()` |
 | The cog's reveal behaviour | `assets/styles.css` → the `.cog` rules |
+| Market catalog CRUD (bottom-left cog) | `assets/catalog.js` |
+| Catalog cog reveal | `assets/styles.css` → the `.catalog-cog` rules |
 | Theme colours | `assets/styles.css` → the `:root` and `[data-theme="dark"]` blocks |
 | Theme default and toggle | `assets/theme.js` |
 | Site language and translations | `assets/i18n.js` (interface) + `assets/i18n-content.js` (content) |
@@ -98,7 +101,13 @@ in `server/README.md`.
 
 ### Adding a listing
 
-Append an object to `LISTINGS` in `assets/data.js`:
+Admins can add, edit, or delete listings from the **catalog cog** in the
+lowest-left corner of every page. It is invisible until you hover it, tab to
+it, or open it (same reveal as the header settings cog). The panel edits
+title, SKU, photos, description, and the rest of the listing fields; changes
+overlay `data.js` in `localStorage` on this device.
+
+To change the seed data instead, append an object to `LISTINGS` in `assets/data.js`:
 
 ```js
 {
@@ -185,8 +194,10 @@ and every call-to-action.
 - The selling page is `sell.html`. It is hidden and gated by
   `data-requires-admin` in `assets/auth.js`; a signed-out visitor sees a
   *sign in as an admin* panel instead of the form.
-- Once an admin is signed in, the cog panel grows an **Admin** section linking
-  to it.
+- Once an admin is signed in, the header cog panel grows an **Admin** section
+  linking to it, and the **catalog cog in the lowest-left corner** (invisible
+  until hover) opens add / edit / delete for listings, including images, SKU,
+  and description. Changes overlay `data.js` in `localStorage`.
 - Defence in depth: the backend refuses `/sell.html` without an admin session
   (403), and the Supabase RLS policies only let allow-listed accounts insert
   listings — so the rule holds even with JavaScript bypassed.

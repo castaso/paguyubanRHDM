@@ -86,7 +86,39 @@ Object.assign(window.ALDER_I18N.id, {
   "{n} problems to fix": "{n} masalah perlu diperbaiki",
 
   /* misc */
-  "Free / borrow": "Gratis / pinjam"
+  "Free / borrow": "Gratis / pinjam",
+
+  /* catalog cog CRUD */
+  "Edit the market": "Sunting pasar",
+  "Catalog": "Katalog",
+  "Close catalog": "Tutup katalog",
+  "Manage listings": "Kelola barang",
+  "Sign in as an admin to edit the market.": "Masuk sebagai admin untuk menyunting pasar.",
+  "Manage what the family is selling": "Kelola apa yang dijual komunitas",
+  "Add a listing": "Tambah barang",
+  "Edit listing": "Sunting barang",
+  "Edit": "Sunting",
+  "Delete": "Hapus",
+  "Cancel": "Batal",
+  "Save listing": "Simpan barang",
+  "Listing saved.": "Barang disimpan.",
+  "Listing removed.": "Barang dihapus.",
+  "Delete this listing? It will leave the market on this device.": "Hapus barang ini? Barang akan hilang dari pasar di perangkat ini.",
+  "No listings yet": "Belum ada barang",
+  "No photos yet": "Belum ada foto",
+  "Remove photo": "Hapus foto",
+  "SKU": "SKU",
+  "Price unit": "Satuan harga",
+  "Seller": "Penjual",
+  "Details (one per line)": "Rincian (satu per baris)",
+  "Tags (comma separated)": "Tag (pisahkan dengan koma)",
+  "Images": "Gambar",
+  "Photos are stored on this device. Keep them small.": "Foto disimpan di perangkat ini. Usahakan ukurannya kecil.",
+  "Optional. Leave blank to generate one.": "Opsional. Kosongkan untuk dibuat otomatis.",
+  "Tell people who has it.": "Beri tahu orang siapa yang punya.",
+  "Fix the highlighted fields.": "Perbaiki kolom yang ditandai.",
+  "e.g. RHDM-OAK01": "mis. RHDM-OAK01",
+  "Unit, e.g. / pair": "Satuan, mis. / pasang"
 });
 
 /* ── content ──────────────────────────────────────────────────────────── */

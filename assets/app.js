@@ -65,13 +65,23 @@
   }
 
   /* ── cards ─────────────────────────────────────────────────────────── */
+  function listingMedia(l) {
+    if (l.image) {
+      return '<div class="listing-media" style="--card-tint: var(' + esc(l.tint) + ')">' +
+        '<img src="' + esc(l.image) + '" alt="">' +
+      "</div>";
+    }
+    return '<div class="listing-media" style="--card-tint: var(' + esc(l.tint) + ')" role="img" aria-label="Placeholder image for ' + esc(l.title) + '">Photo · replace with your own</div>';
+  }
+
   function listingCard(l) {
     return '' +
       '<article class="listing-card card-hover" data-tilt>' +
-        '<div class="listing-media" style="--card-tint: var(' + esc(l.tint) + ')" role="img" aria-label="Placeholder image for ' + esc(l.title) + '">Photo · replace with your own</div>' +
+        listingMedia(l) +
         '<div class="listing-body">' +
           '<span class="badge">' + esc(catLabel(l.category)) + '</span>' +
           '<h3><a href="listing.html?id=' + encodeURIComponent(l.id) + '">' + esc(l.title) + '</a></h3>' +
+          (l.sku ? '<div class="listing-sku">' + esc(l.sku) + "</div>" : "") +
           '<p class="muted clamp-2" style="margin:0;font-size:14.5px;">' + esc(l.blurb) + '</p>' +
           '<div class="listing-foot">' +
             '<span class="listing-price">' + esc(money(l.price, l.priceUnit)) + '</span>' +
@@ -130,7 +140,7 @@
       var out = D.listings.filter(function (l) {
         if (state.cat !== "all" && l.category !== state.cat) return false;
         if (!q) return true;
-        var hay = [l.title, l.seller, l.place, l.blurb, catLabel(l.category)].concat(l.tags || []).join(" ").toLowerCase();
+        var hay = [l.title, l.seller, l.place, l.blurb, l.sku, catLabel(l.category)].concat(l.tags || []).join(" ").toLowerCase();
         return hay.indexOf(q) !== -1;
       });
       out.sort(function (a, b) {
@@ -257,10 +267,22 @@
     var crumb = $("#listing-crumb");
     if (crumb) crumb.textContent = l.title;
 
+    var photos = (l.images && l.images.length) ? l.images : (l.image ? [l.image] : []);
+    var photoHtml = photos.length
+      ? '<div class="ph-img wide has-photo" style="--tint-1: var(' + esc(l.tint) + '); margin-bottom:24px;">' +
+          '<img src="' + esc(photos[0]) + '" alt="' + esc(l.title) + '">' +
+        "</div>" +
+        (photos.length > 1
+          ? '<div class="catalog-photos" style="margin-bottom:24px;">' + photos.slice(1).map(function (src) {
+              return '<figure class="catalog-photo"><img src="' + esc(src) + '" alt=""></figure>';
+            }).join("") + "</div>"
+          : "")
+      : '<div class="ph-img wide" style="--tint-1: var(' + esc(l.tint) + '); margin-bottom:24px;" role="img" aria-label="Placeholder image for ' + esc(l.title) + '">Photo · replace with your own</div>';
+
     root.innerHTML =
       '<div class="detail-grid">' +
         "<div>" +
-          '<div class="ph-img wide" style="--tint-1: var(' + esc(l.tint) + '); margin-bottom:24px;" role="img" aria-label="Placeholder image for ' + esc(l.title) + '">Photo · replace with your own</div>' +
+          photoHtml +
           '<p class="eyebrow">' + esc(catLabel(l.category)) + "</p>" +
           "<h1>" + esc(l.title) + "</h1>" +
           '<p class="lead" style="margin-top:14px;">' + esc(l.blurb) + "</p>" +
@@ -273,6 +295,7 @@
         "<aside class=\"price-box\">" +
           '<div class="card">' +
             '<div class="listing-price" style="font-size:28px;">' + esc(money(l.price, l.priceUnit)) + "</div>" +
+            (l.sku ? '<p class="listing-sku" style="margin:4px 0 0;">' + esc(l.sku) + "</p>" : "") +
             '<p class="muted" style="margin:6px 0 20px;">' + T("Listed") + " " + esc(fmtDate(l.posted)) + "</p>" +
             '<div class="row" style="gap:12px;margin-bottom:20px;">' +
               '<span class="avatar" aria-hidden="true">' + esc(initials(l.seller)) + "</span>" +
@@ -283,6 +306,7 @@
             '<p class="meta" id="contact-note" role="status" style="margin:14px 0 0;"></p>' +
           "</div>" +
           '<dl class="card spec-list" style="margin-top:20px;">' +
+            "<dt>SKU</dt><dd>" + esc(l.sku || "n/a") + "</dd>" +
             "<dt>Category</dt><dd>" + esc(catLabel(l.category)) + "</dd>" +
             "<dt>Condition</dt><dd>" + esc(l.condition) + "</dd>" +
             "<dt>Place</dt><dd>" + esc(l.place) + "</dd>" +
@@ -528,6 +552,22 @@
         form.hidden = true;
         if (summary) summary.hidden = true;
         var data = new FormData(form);
+        if (window.ALDER_CATALOG && window.ALDER_CATALOG.save) {
+          var title = String(data.get("title") || "");
+          var desc = String(data.get("description") || "");
+          var session = window.ALDER_AUTH && window.ALDER_AUTH.session && window.ALDER_AUTH.session();
+          window.ALDER_CATALOG.save({
+            title: title,
+            category: String(data.get("category") || ""),
+            price: Number(data.get("price")),
+            place: String(data.get("place") || ""),
+            seller: (session && session.email) || (D.site && D.site.organizer) || "Admin",
+            blurb: desc,
+            details: [desc],
+            tags: [],
+            condition: "Good"
+          });
+        }
         var s = $("#sell-success-title");
         if (s) s.textContent = data.get("title") || T("Your listing");
         if (success) success.hidden = false;

@@ -80,7 +80,7 @@ generations). **Secondary:** invited friends of the family.
 | M1 | Home hub | Yes | News feed, upcoming events, featured listings, quick counts |
 | M2 | Marketplace browse | Yes | Grid, category filter, search, sort |
 | M3 | Listing detail | Yes | Photos area, price, seller, description, contact/reserve |
-| M4 | Post a listing | Yes — **admins only** | Validated form, category, price, condition/availability |
+| M4 | Post a listing | Yes — **admins only** | Validated form, category, price, condition/availability; catalog cog for add / edit / delete |
 | M5 | Family | Yes | Photo albums, member directory, recipe box |
 | M6 | Events | Yes | List + month grouping, RSVP counts |
 | M7 | About | Yes | How the market works, house rules, contact |
@@ -153,6 +153,16 @@ reachable in one tap from anywhere.
 - **FR4.4** On success: a confirmation state that preserves what was entered and
   offers "View in market".
 - **FR4.5** Never clear the form when submission fails.
+- **FR4.6** A **catalog cog sits in the lowest-left corner and is invisible until
+  hovered, focused, or opened.** It is the admin entry for managing what is being
+  sold: add, edit, and delete listings without a public "Sell something" button.
+- **FR4.7** The catalog form covers the listing fields used in the market:
+  title, SKU, category, price and unit, condition, seller, place, description,
+  details, tags, and images. Images are stored on-device as data URLs so the
+  host CSP (`img-src 'self' data:`) can display them.
+- **FR4.8** Catalog changes overlay `assets/data.js` and persist in
+  `localStorage` on this device. The market, listing detail, home, and ticker
+  re-render from the merged catalog.
 
 ### M5 — Family
 - **FR5.1** Photo album grid with cover, title, and count.
@@ -374,11 +384,12 @@ This is a deliberate, labelled split — not an oversight.
 Static site served from the managed nginx static host.
 Entry point: `index.html`. Pages: `index`, `marketplace`, `listing`, `sell`,
 `family`, `events`, `gallery`, `profiles`, `about`. Shared: `assets/styles.css`, `assets/app.js`,
-`assets/data.js`, `assets/theme.js`, `assets/lang.js`, `assets/i18n.js`,
+`assets/data.js`, `assets/catalog.js`, `assets/theme.js`, `assets/lang.js`, `assets/i18n.js`,
 `assets/i18n-content.js`, `assets/motion.js`, `assets/nav.js`, `assets/auth.js`,
 `assets/supabase-auth.js`, `assets/logo.svg`, `assets/favicon.svg`. Tests: `server/test/api.test.js`,
 `server/test/design.test.js`, `server/test/i18n.test.js`,
 `server/test/motion.test.js`, `server/test/nav.test.js`,
 `server/test/logo.test.js`, `server/test/gallery.test.js`,
 `server/test/profiles.test.js`,
+`server/test/catalog.test.js`,
 `server/test/prd.test.js`.

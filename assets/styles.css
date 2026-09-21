@@ -308,6 +308,8 @@ h4, .h4 { font-size: var(--fs-h4); font-weight: 600; line-height: 1.35; margin: 
 .ph-img.portrait { aspect-ratio: 3 / 4; }
 .ph-img.wide     { aspect-ratio: 16 / 9; }
 .ph-img .ph-note { max-width: 22ch; }
+.ph-img.has-photo { padding: 0; overflow: hidden; }
+.ph-img.has-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 /* ─── listing card ───────────────────────────────────────────────────── */
 .listing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-lg); }
@@ -319,7 +321,10 @@ h4, .h4 { font-size: var(--fs-h4); font-weight: 600; line-height: 1.35; margin: 
   aspect-ratio: 4 / 3; background: linear-gradient(150deg, var(--card-tint, var(--tint-1)), color-mix(in oklch, var(--card-tint, var(--tint-1)) 60%, var(--mix-to)));
   border-bottom: 1px solid var(--border); display: grid; place-items: center;
   font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.05em; color: color-mix(in oklch, var(--fg) 55%, transparent);
-  text-align: center; padding: 10px;
+  text-align: center; padding: 10px; overflow: hidden; position: relative;
+}
+.listing-card .listing-media img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block;
 }
 .listing-card .listing-body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
 .listing-card h3 { font-size: 17px; line-height: 1.3; }
@@ -687,4 +692,49 @@ html[data-motion="on"] [data-reveal-delay="4"] { transition-delay: .28s; }
    panel (see the cog handler in assets/auth.js). */
 @media (hover: none) {
   .cog[data-armed="true"] { opacity: 1; color: var(--fg); background: var(--fg-soft); }
+  .catalog-cog[data-armed="true"] { opacity: 1; color: var(--fg); background: var(--fg-soft); }
 }
+
+/* ─── catalog cog (lowest-left, invisible until hover) ───────────────── */
+.catalog-cog-wrap {
+  position: fixed; left: 14px; bottom: 14px; z-index: 80;
+}
+.catalog-cog {
+  display: grid; place-items: center; width: 34px; height: 34px; flex: none;
+  border: 1px solid transparent; border-radius: 9px; background: transparent; color: var(--muted);
+  opacity: 0; transition: opacity .18s ease, color .15s ease, background-color .15s ease;
+}
+.catalog-cog:hover, .catalog-cog:focus-visible, .catalog-cog[aria-expanded="true"] {
+  opacity: 1; color: var(--fg); background: var(--fg-soft);
+}
+@media (prefers-reduced-motion: reduce) { .catalog-cog { transition: none; } }
+
+.catalog-scrim {
+  position: fixed; inset: 0; z-index: 160; display: grid; justify-items: start;
+  background: var(--scrim);
+}
+.catalog-scrim[hidden] { display: none; }
+.catalog-panel {
+  width: min(440px, 94vw); height: 100%; background: var(--surface);
+  border-right: 1px solid var(--border); box-shadow: var(--shadow-md);
+  padding: 24px; overflow: auto; outline: none;
+}
+.catalog-list { list-style: none; margin: 16px 0 0; padding: 0; }
+.catalog-row {
+  display: grid; grid-template-columns: 44px 1fr auto; gap: 12px; align-items: center;
+  padding: 12px 0; border-top: 1px solid var(--border);
+}
+.catalog-row:first-child { border-top: 0; }
+.catalog-thumb { width: 44px; height: 44px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); display: block; }
+.catalog-thumb-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.catalog-thumb-ph {
+  display: block; width: 100%; height: 100%;
+  background: linear-gradient(150deg, var(--card-tint, var(--tint-1)), color-mix(in oklch, var(--card-tint, var(--tint-1)) 60%, var(--mix-to)));
+}
+.catalog-title { font-weight: 600; font-size: 14px; line-height: 1.3; }
+.catalog-row-actions { display: flex; gap: 2px; }
+.catalog-del { color: var(--danger); }
+.catalog-photos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px; }
+.catalog-photo { margin: 0; }
+.catalog-photo img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); display: block; }
+.listing-sku { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.04em; color: var(--muted); }

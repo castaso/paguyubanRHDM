@@ -71,6 +71,7 @@ const needles = {
   "RBAC": "RBAC",
   "supabase": "upabase",
   "admin-only selling": "admins only",
+  "catalog cog": "catalog cog",
   "no external assets": "No external assets"
 };
 const missing = Object.keys(needles).filter((k) => prd.indexOf(needles[k]) === -1);
